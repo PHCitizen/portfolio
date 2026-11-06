@@ -1,61 +1,59 @@
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
-import Footer from '../components/Footer'
-import Header from '../components/Header'
-
-import appCss from '../styles.css?url'
-
-const THEME_INIT_SCRIPT = `(function(){try{var stored=window.localStorage.getItem('theme');var mode=(stored==='light'||stored==='dark'||stored==='auto')?stored:'auto';var prefersDark=window.matchMedia('(prefers-color-scheme: dark)').matches;var resolved=mode==='auto'?(prefersDark?'dark':'light'):mode;var root=document.documentElement;root.classList.remove('light','dark');root.classList.add(resolved);if(mode==='auto'){root.removeAttribute('data-theme')}else{root.setAttribute('data-theme',mode)}root.style.colorScheme=resolved;}catch(e){}})();`
+import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      {
-        charSet: 'utf-8',
-      },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
-      },
-      {
-        title: 'TanStack Start Starter',
-      },
-    ],
-    links: [
-      {
-        rel: 'stylesheet',
-        href: appCss,
-      },
-    ],
-  }),
-  shellComponent: RootDocument,
-})
+	head: () => ({
+		meta: [
+			{ charSet: "utf-8" },
+			{ name: "viewport", content: "width=device-width, initial-scale=1" },
+			{ title: "Jayvee Embog — Backend Engineer" },
+			{
+				name: "description",
+				content:
+					"Jayvee Embog — backend software engineer based in the Philippines. Building reliable APIs, blockchain applications, and thoughtful systems with TypeScript, Python, and Rust.",
+			},
+			{ name: "theme-color", content: "#0b0d0b" },
+		],
+		links: [
+			{ rel: "stylesheet", href: appCss },
+			{ rel: "preconnect", href: "https://fonts.googleapis.com" },
+			{
+				rel: "preconnect",
+				href: "https://fonts.gstatic.com",
+				crossOrigin: "anonymous",
+			},
+			{
+				rel: "stylesheet",
+				href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap",
+			},
+		],
+	}),
+	shellComponent: RootDocument,
+});
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
-        <HeadContent />
-      </head>
-      <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
-        <Header />
-        {children}
-        <Footer />
-        <TanStackDevtools
-          config={{
-            position: 'bottom-right',
-          }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
-        <Scripts />
-      </body>
-    </html>
-  )
+	return (
+		<html
+			lang="en"
+			className="scroll-smooth [color-scheme:dark] motion-reduce:scroll-auto"
+		>
+			<head>
+				<HeadContent />
+			</head>
+			<body className="m-0 bg-[#0b0d0b] font-['Space_Grotesk',sans-serif] text-[#e8ece5] antialiased selection:bg-[#61cf5a] selection:text-[#0b0d0b] [&_a]:transition-colors [&_a:focus-visible]:outline-2 [&_a:focus-visible]:outline-offset-4 [&_a:focus-visible]:outline-[#61cf5a] [&_button:focus-visible]:outline-2 [&_button:focus-visible]:outline-offset-4 [&_button:focus-visible]:outline-[#61cf5a] [&_.font-mono]:font-['Space_Mono',monospace]">
+				<a
+					href="#main-content"
+					className="sr-only fixed left-4 top-4 z-50 bg-[#61cf5a] p-3 text-black focus:not-sr-only"
+				>
+					Skip to content
+				</a>
+				<Header />
+				{children}
+				<Footer />
+				<Scripts />
+			</body>
+		</html>
+	);
 }
