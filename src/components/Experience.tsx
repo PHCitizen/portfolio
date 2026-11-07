@@ -27,11 +27,15 @@ const jobs = [
 		tags: ["Solidity", "Hardhat", "SmartBCH", "Full-stack"],
 	},
 ];
-export default function Experience() {
+export default function Experience({
+	embedded = false,
+}: {
+	embedded?: boolean;
+}) {
 	return (
 		<section
 			className="scroll-mt-10 border-t border-white/10 py-16 lg:py-20"
-			id="experience"
+			id={embedded ? undefined : "experience"}
 		>
 			<SectionHeading
 				number="02"

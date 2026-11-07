@@ -1,4 +1,9 @@
-import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
+import {
+	createRootRoute,
+	HeadContent,
+	Scripts,
+	useRouterState,
+} from "@tanstack/react-router";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import appCss from "../styles.css?url";
@@ -34,6 +39,9 @@ export const Route = createRootRoute({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+	const isDesktop = useRouterState({
+		select: (state) => state.location.pathname === "/",
+	});
 	return (
 		<html
 			lang="en"
@@ -49,9 +57,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				>
 					Skip to content
 				</a>
-				<Header />
+				{!isDesktop && <Header />}
 				{children}
-				<Footer />
+				{!isDesktop && <Footer />}
 				<Scripts />
 			</body>
 		</html>

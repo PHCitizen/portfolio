@@ -9,11 +9,11 @@ const profile = [
 	["looking_for", "240-hour OJT"],
 ];
 
-export default function About() {
+export default function About({ embedded = false }: { embedded?: boolean }) {
 	return (
 		<section
 			className="scroll-mt-10 border-t border-white/10 py-16 lg:py-20"
-			id="about"
+			id={embedded ? undefined : "about"}
 		>
 			<SectionHeading
 				number="01"
