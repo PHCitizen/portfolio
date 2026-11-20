@@ -42,7 +42,34 @@ pnpm check
 ```
 
 
-## Deploy with Nitro
+## Deploy to Cloudflare Pages (legacy)
+
+The Pages build uses Nitro's `cloudflare-pages` preset for server-side rendering. Wrangler uploads `dist/` to the Pages project `jayveeembog` (not a standalone Workers deployment).
+
+Use Node.js 22.12+ and install dependencies with `pnpm install --frozen-lockfile`. To build and test locally:
+
+```bash
+pnpm build:pages
+pnpm preview:pages
+```
+
+Authenticate with `pnpm exec wrangler login`. In CI, supply `CLOUDFLARE_ACCOUNT_ID` and a `CLOUDFLARE_API_TOKEN` with Account → Cloudflare Pages → Edit access as secrets instead.
+
+If the Pages project does not exist, create it once with `master` as the production branch:
+
+```bash
+pnpm exec wrangler pages project create jayveeembog --production-branch master
+```
+
+Then deploy to production:
+
+```bash
+pnpm deploy:pages
+```
+
+The intended production URL is https://jayveeembog.pages.dev. If the project already exists, confirm its production branch is `master` before deploying; a different branch produces a preview deployment.
+
+## Deploy with Nitro to Node.js
 
 This project uses Nitro as a generic server adapter, so it can run on any Node-compatible host.
 
