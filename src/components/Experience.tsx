@@ -61,13 +61,13 @@ export default function Experience({
 						className="grid gap-5 md:grid-cols-[240px_1fr] md:gap-12"
 						key={entry.name}
 					>
-						<div className="relative flex flex-col gap-3 pl-5 font-mono text-[10px] text-[#bac3b4] [&_small]:text-[8px] [&_small]:tracking-widest [&_small]:text-[#7e877b]">
+						<div className="relative flex flex-col gap-3 pl-5 font-mono text-sm text-[#bac3b4] [&_small]:text-xs [&_small]:tracking-widest [&_small]:text-[#7e877b]">
 							<span className="absolute left-0 top-1 size-1.5 rounded-full border border-[#61cf5a] bg-[#132210]" />
 							<span>{entry.dates}</span>
 							<small>{entry.type}</small>
 						</div>
-						<div className="relative border-l border-[#3b4b33] pb-3 pl-6 [&_h3]:pr-5 [&_h3]:text-lg [&_h3]:font-medium [&_h3>span]:text-[#61cf5a] [&_ul]:my-4 [&_ul]:space-y-3 [&_li]:relative [&_li]:pl-4 [&_li]:text-xs [&_li]:leading-6 [&_li]:text-[#92998e] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:text-[#50864c] [&_li]:before:content-['▹']">
-							<span className="absolute right-0 top-1 font-mono text-[10px] text-[#586451]">
+						<div className="relative border-l border-[#3b4b33] pb-3 pl-6 [&_h3]:pr-5 [&_h3]:text-xl [&_h3]:font-medium [&_h3>span]:text-[#61cf5a] [&_ul]:my-4 [&_ul]:space-y-3 [&_li]:relative [&_li]:pl-4 [&_li]:text-base [&_li]:leading-7 [&_li]:text-[#92998e] [&_li]:before:absolute [&_li]:before:left-0 [&_li]:before:text-[#50864c] [&_li]:before:content-['▹']">
+							<span className="absolute right-0 top-1 font-mono text-xs text-[#586451]">
 								/ 0{i + 1}
 							</span>
 							<h3>
@@ -88,13 +88,13 @@ export default function Experience({
 									)}
 								</span>
 							</h3>
-							<p className="mt-2 text-xs text-[#a2ab9a]">{entry.description}</p>
+							<p className="mt-2 text-base leading-7 text-[#a2ab9a]">{entry.description}</p>
 							<ul>
 								{entry.bullets.map((bullet) => (
 									<li key={bullet}>{bullet}</li>
 								))}
 							</ul>
-							<div className="mt-5 flex flex-wrap gap-2 [&>span]:border [&>span]:border-[#3b4b33]/70 [&>span]:bg-[#61cf5a]/[0.025] [&>span]:px-2 [&>span]:py-1 [&>span]:font-mono [&>span]:text-[9px] [&>span]:text-[#93aa87]">
+							<div className="mt-5 flex flex-wrap gap-2 [&>span]:border [&>span]:border-[#3b4b33]/70 [&>span]:bg-[#61cf5a]/[0.025] [&>span]:px-2 [&>span]:py-1 [&>span]:font-mono [&>span]:text-xs [&>span]:text-[#93aa87]">
 								{entry.tags.map((tag) => (
 									<span key={tag}>{tag}</span>
 								))}

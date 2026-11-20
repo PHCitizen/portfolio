@@ -29,7 +29,7 @@ export default function About({ embedded = false }: { embedded?: boolean }) {
 							Reliable software is the output.
 						</span>
 					</h3>
-					<p className="mb-4 text-[13px] leading-7 text-[#92998e]">
+					<p className="mb-4 text-base leading-7 text-[#92998e]">
 						I’m Jayvee, a backend software engineer who enjoys figuring out how
 						things work — and making them work better. I’ve spent two years
 						building customer-facing products at{" "}
@@ -44,14 +44,14 @@ export default function About({ embedded = false }: { embedded?: boolean }) {
 						, alongside freelance work in blockchain and decentralized
 						applications.
 					</p>
-					<p className="mb-6 text-[13px] leading-7 text-[#92998e]">
+					<p className="mb-6 text-base leading-7 text-[#92998e]">
 						My comfort zone is somewhere between a well-designed API, a Linux
 						terminal, and a tricky systems problem. I care about clean
 						architecture, thoughtful trade-offs, and code that holds up in
 						production.
 					</p>
 					<a
-						className="inline-flex gap-3 font-mono text-[11px] text-[#bac6b4] transition-colors hover:text-[#61cf5a]"
+						className="inline-flex gap-3 font-mono text-sm text-[#bac6b4] transition-colors hover:text-[#61cf5a]"
 						href="https://github.com/PHCitizen"
 						target="_blank"
 						rel="noreferrer"
@@ -61,16 +61,16 @@ export default function About({ embedded = false }: { embedded?: boolean }) {
 					</a>
 				</div>
 				<div className="self-center overflow-hidden border border-[#3b4b33]/70 bg-[#0f120e]">
-					<div className="flex justify-between border-b border-[#3b4b33]/60 px-5 py-3 font-mono text-[10px] text-[#92998e]">
+					<div className="flex justify-between border-b border-[#3b4b33]/60 px-5 py-3 font-mono text-sm text-[#92998e]">
 						<span>
 							<span className="mr-2 text-[#61cf5a]">◇</span>developer.json
 						</span>
 						<span className="text-[#586451]">JSON</span>
 					</div>
-					<div className="overflow-x-auto px-4 py-5 font-mono text-[10px] leading-[26px] sm:px-6 sm:text-[11px]">
+					<div className="px-4 py-5 font-mono text-sm leading-7 sm:px-6">
 						<div className="text-[#747f6e]">{"{"}</div>
 						{profile.map(([key, value]) => (
-							<div className="whitespace-nowrap pl-4" key={key}>
+							<div className="break-words pl-4" key={key}>
 								<span className="text-[#a6afa0]">"{key}"</span>:{" "}
 								<span className="text-[#8cbd7b]">"{value}"</span>,
 							</div>
@@ -81,7 +81,7 @@ export default function About({ embedded = false }: { embedded?: boolean }) {
 						</div>
 						<div className="text-[#747f6e]">{" }"}</div>
 					</div>
-					<div className="flex items-center gap-2 border-t border-[#3b4b33]/50 px-5 py-3 font-mono text-[9px] text-[#7e877b]">
+					<div className="flex items-center gap-2 border-t border-[#3b4b33]/50 px-5 py-3 font-mono text-xs text-[#7e877b]">
 						<span className="size-1 rounded-full bg-[#61cf5a]" /> Always
 						learning. Always building.
 					</div>
@@ -102,7 +102,7 @@ export default function About({ embedded = false }: { embedded?: boolean }) {
 							{value}
 							<span className="text-[#61cf5a]">{suffix}</span>
 						</strong>
-						<span className="font-mono text-[8px] tracking-[0.13em] text-[#7e877b]">
+						<span className="text-center font-mono text-xs tracking-[0.06em] text-[#7e877b]">
 							{label}
 						</span>
 					</div>

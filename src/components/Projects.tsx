@@ -66,14 +66,14 @@ export default function Projects() {
 				title="Selected work"
 				note="BUILT. SHIPPED. ITERATED."
 			/>
-			<div className="grid gap-5 md:grid-cols-3">
+			<div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
 				{projects.map((project) => (
 					<article
 						className="group flex flex-col border border-[#3b4b33]/60 bg-[#0f120e] transition-colors hover:border-[#50864c]"
 						key={project.id}
 					>
 						<div className="relative flex h-52 items-center justify-center overflow-hidden border-b border-[#3b4b33]/60 bg-[linear-gradient(#61cf5a05_1px,transparent_1px),linear-gradient(90deg,#61cf5a05_1px,transparent_1px)] bg-[size:20px_20px]">
-							<span className="absolute left-4 top-3 font-mono text-[8px] tracking-widest text-[#586451]">
+							<span className="absolute left-4 top-3 font-mono text-xs tracking-widest text-[#586451]">
 								PROJECT_{project.id}
 							</span>
 							<div className="transition-transform duration-500 group-hover:scale-105">
@@ -84,19 +84,19 @@ export default function Projects() {
 							</span>
 						</div>
 						<div className="flex flex-1 flex-col p-5">
-							<span className="font-mono text-[7px] tracking-[0.14em] text-[#63ad58]">
+							<span className="font-mono text-xs tracking-[0.08em] text-[#63ad58]">
 								{project.category}
 							</span>
-							<h3 className="mt-3 text-lg font-medium tracking-tight">
+							<h3 className="mt-3 text-xl font-medium tracking-tight">
 								{project.name}
 							</h3>
-							<p className="mt-3 flex-1 text-xs leading-6 text-[#92998e]">
+							<p className="mt-3 flex-1 text-base leading-7 text-[#92998e]">
 								{project.description}
 							</p>
 							<div className="mt-5 flex flex-wrap gap-2">
 								{project.tags.map((tag) => (
 									<span
-										className="border border-[#3b4b33]/70 px-2 py-1 font-mono text-[8px] text-[#93aa87]"
+										className="border border-[#3b4b33]/70 px-2 py-1 font-mono text-xs text-[#93aa87]"
 										key={tag}
 									>
 										{tag}
@@ -104,7 +104,7 @@ export default function Projects() {
 								))}
 							</div>
 							<div className="mt-5 flex items-center justify-between border-t border-[#3b4b33]/60 pt-4">
-								<span className="font-mono text-[7px] tracking-wide text-[#7e877b]">
+								<span className="font-mono text-xs tracking-wide text-[#7e877b]">
 									{project.badge}
 								</span>
 								{project.href ? (
@@ -132,7 +132,7 @@ export default function Projects() {
 								)}
 							</div>
 							{expanded === project.id && (
-								<p className="mt-4 border-t border-[#3b4b33] pt-4 text-xs leading-6 text-[#92998e]">
+								<p className="mt-4 border-t border-[#3b4b33] pt-4 text-base leading-7 text-[#92998e]">
 									{project.detail}. Led a six-member team to build REST APIs and
 									administrative interfaces, with pilot testing at URS Antipolo
 									for Semester 1, AY 2026–2027.
@@ -143,7 +143,7 @@ export default function Projects() {
 				))}
 			</div>
 			<a
-				className="mx-auto mt-8 flex w-fit gap-4 font-mono text-[10px] text-[#9aac90] transition-colors hover:text-[#61cf5a]"
+				className="mx-auto mt-8 flex w-fit gap-4 font-mono text-sm text-[#9aac90] transition-colors hover:text-[#61cf5a]"
 				href="https://github.com/PHCitizen"
 				target="_blank"
 				rel="noreferrer"

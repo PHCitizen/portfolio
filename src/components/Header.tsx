@@ -19,7 +19,7 @@ export default function Header() {
 				</span>
 			</a>
 			<button
-				className="font-mono text-xs text-[#61cf5a] md:hidden"
+				className="font-mono text-sm text-[#61cf5a] lg:hidden"
 				type="button"
 				onClick={() => setOpen(!open)}
 				aria-expanded={open}
@@ -28,12 +28,12 @@ export default function Header() {
 				{open ? "[ close ]" : "[ menu ]"}
 			</button>
 			<nav
-				className={`${open ? "flex" : "hidden"} absolute inset-x-0 top-24 flex-col gap-6 border-b border-white/10 bg-[#0b0d0b] p-6 md:static md:flex md:flex-row md:gap-7 md:border-0 md:bg-transparent md:p-0`}
+				className={`${open ? "flex" : "hidden"} absolute inset-x-0 top-24 flex-col gap-6 border-b border-white/10 bg-[#0b0d0b] p-6 lg:static lg:flex lg:flex-row lg:gap-5 lg:border-0 lg:bg-transparent lg:p-0`}
 				aria-label="Main navigation"
 			>
 				{links.map((link, i) => (
 					<a
-						className="font-mono text-[11px] text-[#a0a69e] transition-colors hover:text-[#61cf5a]"
+						className="font-mono text-sm text-[#a0a69e] transition-colors hover:text-[#61cf5a]"
 						key={link}
 						href={`/#${link.toLowerCase()}`}
 						onClick={() => setOpen(false)}
@@ -44,7 +44,7 @@ export default function Header() {
 				))}
 			</nav>
 			<a
-				className="hidden items-center gap-7 border border-[#3b4b33] px-4 py-2.5 font-mono text-xs transition-colors hover:border-[#61cf5a] hover:text-[#61cf5a] lg:flex"
+				className="hidden items-center gap-4 border border-[#3b4b33] px-4 py-2.5 font-mono text-sm transition-colors hover:border-[#61cf5a] hover:text-[#61cf5a] xl:flex"
 				href="mailto:embogjayvee@gmail.com"
 			>
 				Let’s talk <span className="text-[#61cf5a]">↗</span>
