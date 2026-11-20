@@ -40,6 +40,19 @@ export const projects = [
 	},
 	{
 		id: "04",
+		name: "URStamp",
+		category: "SYSTEM MAKING CONTEST",
+		description:
+			"Our team placed 1st in the System Making Contest at the University of Rizal System, Antipolo Campus.",
+		tags: ["Team Project", "Competition"],
+		href: "https://urstamp-prod.cruzjack689.workers.dev",
+		linkLabel: "View live project",
+		visual: "contest",
+		badge: "1ST PLACE",
+		detail: "University of Rizal System · Antipolo Campus",
+	},
+	{
+		id: "05",
 		name: "BCC x Binance Academy: Build4Campus Hackathon",
 		category: "HACKATHON",
 		description:

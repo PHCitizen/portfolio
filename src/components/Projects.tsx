@@ -40,7 +40,7 @@ function ProjectVisual({ type }: { type: string }) {
 				</div>
 			</div>
 		);
-	if (type === "hackathon")
+	if (type === "hackathon" || type === "contest")
 		return (
 			<div
 				className="flex w-[220px] -rotate-3 items-center gap-4 border border-[#3b4b33] bg-[#0c120b] p-4"
@@ -59,8 +59,12 @@ function ProjectVisual({ type }: { type: string }) {
 					<path d="M8 21h8m-4-5v5M7 4h10v7a5 5 0 0 1-10 0V4ZM7 6H3v2a4 4 0 0 0 4 4m10-6h4v2a4 4 0 0 1-4 4" />
 				</svg>
 				<div className="border-l border-[#3b4b33] pl-4 font-mono">
-					<div className="text-xs text-[#93aa87]">BUILD4CAMPUS</div>
-					<div className="mt-1 text-2xl text-[#61cf5a]">TOP 10</div>
+					<div className="text-xs text-[#93aa87]">
+						{type === "contest" ? "URSTAMP" : "BUILD4CAMPUS"}
+					</div>
+					<div className="mt-1 text-2xl text-[#61cf5a]">
+						{type === "contest" ? "1ST PLACE" : "TOP 10"}
+					</div>
 				</div>
 			</div>
 		);
@@ -79,6 +83,7 @@ function ProjectVisual({ type }: { type: string }) {
 }
 
 const newestProjects = [...projects].reverse();
+const SCROLL_LEAD_IN = 80;
 
 export default function Projects() {
 	const [expanded, setExpanded] = useState<string | null>(null);
@@ -104,7 +109,10 @@ export default function Projects() {
 			const position = Math.round(
 				Math.min(
 					distance,
-					Math.max(0, stickyTop - runway.getBoundingClientRect().top),
+					Math.max(
+						0,
+						stickyTop - runway.getBoundingClientRect().top - SCROLL_LEAD_IN,
+					),
 				),
 			);
 			if (position !== lastPosition) {
@@ -127,8 +135,9 @@ export default function Projects() {
 			distance = nextDistance;
 			lastPosition = -1;
 			stage.toggleAttribute("data-scroll-driven", distance > 0);
-			// One pixel of vertical travel per pixel of horizontal overflow.
-			runway.style.setProperty("--project-travel", `${distance}px`);
+			// Keep the section pinned through the lead-in and the full horizontal travel.
+			const travel = distance > 0 ? SCROLL_LEAD_IN + distance : 0;
+			runway.style.setProperty("--project-travel", `${travel}px`);
 			onScroll();
 		};
 
@@ -233,7 +242,8 @@ export default function Projects() {
 												rel="noreferrer"
 												aria-label={`${project.linkLabel}: ${project.name}`}
 											>
-												{project.visual === "hackathon" && (
+												{(project.visual === "hackathon" ||
+													project.visual === "contest") && (
 													<span className="mr-2 font-mono text-xs">
 														{project.linkLabel}
 													</span>
