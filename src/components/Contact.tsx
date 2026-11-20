@@ -1,4 +1,5 @@
 import { useState } from "react";
+import SectionHeading from "./SectionHeading";
 
 export default function Contact({ embedded = false }: { embedded?: boolean }) {
 	const [copied, setCopied] = useState(false);
@@ -13,21 +14,16 @@ export default function Contact({ embedded = false }: { embedded?: boolean }) {
 			setCopyError(true);
 		}
 	}
-	return (
-		<section
-			className="relative mb-16 scroll-mt-10 overflow-hidden border border-[#3b4b33]/70 bg-[radial-gradient(ellipse_at_bottom_right,#1b2c16_0%,#0e130d_65%)] px-6 py-14 sm:px-12 lg:py-20"
-			id={embedded ? undefined : "contact"}
-		>
-			<div className="relative z-10 mb-6 flex items-center gap-2 font-mono text-xs tracking-[0.08em] text-[#8db47e]">
-				<span className="size-1.5 rounded-full bg-[#61cf5a] shadow-[0_0_8px_#61cf5a70]" />{" "}
-				05 / OPEN FOR THE NEXT CHAPTER
-			</div>
-			<h2 className="relative z-10 text-[clamp(1.8rem,4vw,3.5rem)] leading-[1.15] font-semibold tracking-[-0.04em]">
+	const Panel = embedded ? "section" : "div";
+	const PanelHeading = embedded ? "h2" : "h3";
+	const panel = (
+		<Panel className="relative overflow-hidden border border-[#3b4b33]/70 bg-[radial-gradient(ellipse_at_bottom_right,#1b2c16_0%,#0e130d_65%)] px-6 py-14 sm:px-12 lg:py-20">
+			<PanelHeading className="relative z-10 text-[clamp(1.8rem,4vw,3.5rem)] leading-[1.15] font-semibold tracking-[-0.04em]">
 				Have a problem worth
 				<br />
 				<span className="text-[#61cf5a]">solving together?</span>
 				<span className="text-[#61cf5a]">_</span>
-			</h2>
+			</PanelHeading>
 			<p className="relative z-10 mt-6 text-base leading-7 text-[#92998e]">
 				I’m looking for a backend OJT placement and meaningful opportunities.
 				<br />
@@ -72,6 +68,18 @@ export default function Contact({ embedded = false }: { embedded?: boolean }) {
 			>
 				{"{ }"}
 			</span>
+		</Panel>
+	);
+
+	if (embedded) return panel;
+
+	return (
+		<section
+			className="mb-16 scroll-mt-10 border-t border-white/10 pt-16 lg:pt-20"
+			id="contact"
+		>
+			<SectionHeading number="05" title="Open for the next chapter" />
+			{panel}
 		</section>
 	);
 }

@@ -4,10 +4,8 @@ export default function Footer() {
 			<a className="text-base font-bold text-[#e8ece5]" href="/#">
 				jayvee<span className="text-[#61cf5a]">.dev_</span>
 			</a>
-			<p>Designed with intention. Built with code.</p>
 			<span>
 				© {new Date().getFullYear()} Jayvee Embog{" "}
-				<span className="ml-3 text-[#50864c]">// end of file</span>
 			</span>
 		</footer>
 	);

@@ -649,9 +649,6 @@
 .window-contact h2 {
 	font-size: clamp(30px, 4vw, 50px);
 }
-.window-contact .window-content > section > div:first-child {
-	display: none;
-}
 .desktop-command {
 	position: absolute;
 	bottom: 115px;
