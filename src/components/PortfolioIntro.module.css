@@ -105,6 +105,7 @@
 	}
 
 	.drawing {
+		grid-row: 1;
 		width: min(100%, 28rem);
 		margin-inline: auto;
 	}
