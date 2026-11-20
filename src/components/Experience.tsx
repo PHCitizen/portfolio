@@ -181,7 +181,7 @@ export default function Experience({
 							<article>
 								<div className={styles.meta}>
 									<span>MID-2023 — PRESENT</span>
-									<span className={styles.branchName}>education</span>
+									<span className={styles.branchName}>urs</span>
 								</div>
 								<h3>Bachelor of Science in Computer Engineering</h3>
 								<p className={styles.role}>
@@ -197,6 +197,56 @@ export default function Experience({
 								title="Joystick Club merge"
 							>
 								DEC 2023
+							</time>
+						</li>
+						<li className={`${styles.chapter} ${styles.kiosk}`}>
+							<div className={styles.rail} aria-hidden="true">
+								<span
+									className={`${styles.branchLine} ${styles.educationContinues}`}
+								/>
+								<svg
+									aria-hidden="true"
+									className={`${styles.fork} ${styles.kioskFork}`}
+									viewBox="0 0 160 48"
+									fill="none"
+								>
+									<path d="M64 0 C64 28 40 20 40 48" />
+								</svg>
+								<span className={styles.branchLine} />
+								<span className={styles.node}>
+									<span className={styles.nodeFill} />
+								</span>
+								<svg
+									aria-hidden="true"
+									className={styles.join}
+									viewBox="0 0 160 64"
+									fill="none"
+								>
+									<path d="M40 0 V16 C40 44 64 36 64 64" />
+								</svg>
+								<span className={styles.mergeNode} />
+							</div>
+							<article>
+								<div className={styles.meta}>
+									<time dateTime="2024-03">MAR 2024</time>
+									<span className={styles.branchName}>red-ribbon-kiosk</span>
+								</div>
+								<h3>Red Ribbon Kiosk Clone</h3>
+								<p className={styles.description}>
+									A recreation of the Red Ribbon Bakeshop kiosk, built as a
+									school project at URS.
+								</p>
+								<div className={styles.tags}>
+									<span>VB.NET</span>
+									<span>Microsoft SQL Server</span>
+								</div>
+							</article>
+							<time
+								className={styles.mergeDate}
+								dateTime="2024-04"
+								title="Red Ribbon kiosk merge into URS"
+							>
+								APR 2024
 							</time>
 						</li>
 						<li className={`${styles.chapter} ${styles.bitcoin}`}>

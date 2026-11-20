@@ -169,6 +169,11 @@
 	--lane: var(--education-lane);
 	padding-bottom: 96px;
 }
+.kiosk {
+	--branch: #e2949b;
+	--lane: 25%;
+	--fork-height: 48px;
+}
 .bitcoin {
 	--branch: #61cf5a;
 	--lane: var(--right-lane);
@@ -204,6 +209,9 @@
 .fork {
 	top: 0;
 }
+.rail .kioskFork {
+	height: var(--fork-height);
+}
 .join,
 .joystickJoin {
 	bottom: 0;
@@ -219,7 +227,7 @@
 .joystickContinues {
 	position: absolute;
 	left: calc(var(--lane) - 1px);
-	top: 64px;
+	top: var(--fork-height, 64px);
 	bottom: 0;
 	width: 2px;
 	background: var(--branch);
@@ -233,6 +241,9 @@
 }
 .bitcoin .branchLine {
 	top: calc(64px + var(--fork-gap));
+}
+.bitcoin .branchLine,
+.kiosk .branchLine {
 	bottom: 64px;
 }
 .branchLine.educationContinues {
@@ -278,6 +289,9 @@
 .monero .mergeNode {
 	bottom: 59px;
 }
+.kiosk .mergeNode {
+	left: var(--education-lane);
+}
 .joystickMergeNode {
 	border-color: #a9bb95;
 }
@@ -296,7 +310,8 @@
 .moneroDate {
 	bottom: 52px;
 }
-.bitcoin .mergeDate {
+.bitcoin .mergeDate,
+.kiosk .mergeDate {
 	right: calc(50% + var(--education-lane-offset) + 16px);
 	left: auto;
 }
