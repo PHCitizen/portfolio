@@ -109,22 +109,13 @@
 	pointer-events: none;
 }
 
-.stickyHeading {
+.graphHeading {
 	--graph-gap: 32px;
-	position: sticky;
-	z-index: 2;
-	top: 0;
 	margin-bottom: var(--graph-gap);
-	padding-block: 8px;
-	background: #0b0d0b;
-}
-
-.stickyHeading > :first-child {
-	margin-bottom: 0;
 }
 
 .storyStage[data-pinned] {
-	height: calc(100dvh - var(--story-heading-height, 0px));
+	height: calc(100dvh - var(--story-pin-offset, 0px));
 	overflow: clip;
 }
 

@@ -5,7 +5,7 @@ const links = ["About", "Experience", "Projects", "Skills", "Contact"];
 export default function Header() {
 	const [open, setOpen] = useState(false);
 	return (
-		<header className="relative z-30 mx-auto flex h-24 max-w-[1440px] items-center justify-between border-b border-white/10 px-6 lg:px-16">
+		<header className="sticky top-0 z-30 mx-auto flex h-(--site-header-height) max-w-[1440px] items-center justify-between border-b border-white/10 bg-[#0b0d0b] px-6 lg:px-16">
 			<a
 				className="flex items-center gap-3 text-xl font-bold tracking-tight"
 				href="/#"
@@ -28,7 +28,7 @@ export default function Header() {
 				{open ? "[ close ]" : "[ menu ]"}
 			</button>
 			<nav
-				className={`${open ? "flex" : "hidden"} absolute inset-x-0 top-24 flex-col gap-6 border-b border-white/10 bg-[#0b0d0b] p-6 lg:static lg:flex lg:flex-row lg:gap-5 lg:border-0 lg:bg-transparent lg:p-0`}
+				className={`${open ? "flex" : "hidden"} absolute inset-x-0 top-(--site-header-height) max-h-[calc(100dvh-var(--site-header-height))] flex-col gap-6 overflow-y-auto border-b border-white/10 bg-[#0b0d0b] p-6 lg:static lg:flex lg:max-h-none lg:flex-row lg:gap-5 lg:overflow-visible lg:border-0 lg:bg-transparent lg:p-0`}
 				aria-label="Main navigation"
 			>
 				{links.map((link, i) => (

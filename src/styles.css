@@ -1,1 +1,12 @@
 @import 'tailwindcss';
+
+:root {
+	--site-header-height: 4rem;
+	scroll-padding-top: var(--site-header-height);
+}
+
+@media (min-width: 64rem) {
+	:root {
+		--site-header-height: 6rem;
+	}
+}

@@ -26,14 +26,15 @@ export default function Experience({
 			className="scroll-mt-10 border-t border-white/10 py-16 lg:py-20"
 			id={embedded ? undefined : "experience"}
 		>
-			<div ref={heading} className={styles.stickyHeading}>
-				<SectionHeading
-					number="02"
-					title="The commit history"
-					note="EXPERIENCE THAT SHIPS"
-				/>
+			<SectionHeading
+				ref={heading}
+				className={styles.graphHeading}
+				number="02"
+				title="The commit history"
+				note="EXPERIENCE THAT SHIPS"
+			>
 				<div className={styles.mainLabel}>main</div>
-			</div>
+			</SectionHeading>
 			<div ref={stage} className={styles.storyStage}>
 				<div className={styles.storyTrack}>
 					<ol

@@ -44,10 +44,14 @@ export function useCommitHistoryScroll(
 
 		const update = () => {
 			const headingHeight = heading.offsetHeight;
+			const headerOffset =
+				Number.parseFloat(getComputedStyle(heading).top) || 0;
+			const pinOffset = headerOffset + headingHeight;
 			const size = [
 				stage.clientWidth,
 				window.innerHeight,
 				headingHeight,
+				headerOffset,
 				track.offsetHeight,
 				motion.matches,
 				mobile.matches,
@@ -61,11 +65,11 @@ export function useCommitHistoryScroll(
 
 			context = gsap.context(() => {
 				if (!motion.matches) {
-					gsap.set(stage, { "--story-heading-height": `${headingHeight}px` });
+					gsap.set(stage, { "--story-pin-offset": `${pinOffset}px` });
 					stage.dataset.pinned = "";
 				}
 				const height = stage.clientHeight;
-				// The pin starts below the heading, but the cards center on the screen itself.
+				// Center cards in the viewport below the navigation, accounting for the heading.
 				const screenMidpoint = (height - headingHeight) / 2;
 				if (
 					motion.matches ||
@@ -303,9 +307,9 @@ export function useCommitHistoryScroll(
 					trigger: stage,
 					animation: story,
 					pin: true,
-					start: `top top+=${headingHeight}`,
+					start: `top top+=${pinOffset}`,
 					end: () =>
-						`+=${(stage.clientHeight + headingHeight) * slides.length * VIEWPORTS_PER_COMMIT}`,
+						`+=${(stage.clientHeight + pinOffset) * slides.length * VIEWPORTS_PER_COMMIT}`,
 					// Ease into large wheel steps without intercepting native scrolling.
 					scrub: STORY_SCRUB_SECONDS,
 				});
