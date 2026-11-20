@@ -12,6 +12,7 @@ const CROSSING = 0.46;
 export function useCommitHistoryScroll(
 	ref: RefObject<HTMLDivElement | null>,
 	headingRef: RefObject<HTMLDivElement | null>,
+	playMerge: () => void,
 ) {
 	useEffect(() => {
 		const stage = ref.current;
@@ -42,6 +43,17 @@ export function useCommitHistoryScroll(
 		let focus: ((event: FocusEvent) => void) | undefined;
 		let frame = 0;
 		let previousSize = "";
+		let silent = false;
+
+		const onMerge = (node: Element) => {
+			if (silent || motion.matches) return;
+			const { top, bottom } = node.getBoundingClientRect();
+			const visibleTop = Math.max(0, heading.getBoundingClientRect().bottom);
+			const visibleBottom = stage.hasAttribute("data-pinned")
+				? Math.min(window.innerHeight, stage.getBoundingClientRect().bottom)
+				: window.innerHeight;
+			if (bottom > visibleTop && top < visibleBottom) playMerge();
+		};
 
 		const update = () => {
 			const headingHeight = heading.offsetHeight;
@@ -60,6 +72,7 @@ export function useCommitHistoryScroll(
 			].join(":");
 			if (size === previousSize) return;
 			previousSize = size;
+			silent = true;
 			context?.revert();
 			delete stage.dataset.pinned;
 			focus = undefined;
@@ -79,7 +92,7 @@ export function useCommitHistoryScroll(
 					// Leave tall cards in normal flow rather than clipping their text.
 					delete stage.dataset.pinned;
 					if (!motion.matches) {
-						const { draw } = createCommitGraphDraw(track, list);
+						const { draw } = createCommitGraphDraw(track, list, onMerge);
 						gsap.fromTo(
 							label,
 							{ "--connector-progress": 0 },
@@ -156,7 +169,7 @@ export function useCommitHistoryScroll(
 					side > 0
 						? width - part.offsetLeft + 32
 						: -(part.offsetLeft + part.offsetWidth + 32);
-				const { draw, center } = createCommitGraphDraw(track, list);
+				const { draw, center } = createCommitGraphDraw(track, list, onMerge);
 				const slides = commits.map(({ part, node, fill }) => {
 					return {
 						part,
@@ -322,15 +335,18 @@ export function useCommitHistoryScroll(
 						return;
 					// Keep keyboard navigation to the existing link usable while its card is offscreen.
 					const progress = (index + 0.65) / slides.length;
+					silent = true;
 					window.scrollTo({
 						top: gsap.utils.interpolate(trigger.start, trigger.end, progress),
 						behavior: "instant",
 					});
 					ScrollTrigger.update();
 					trigger.getTween()?.progress(1);
+					silent = false;
 				};
 			}, stage);
 			ScrollTrigger.refresh();
+			silent = false;
 		};
 
 		const onFocus = (event: FocusEvent) => focus?.(event);
@@ -352,8 +368,9 @@ export function useCommitHistoryScroll(
 			stage.removeEventListener("focusin", onFocus);
 			window.removeEventListener("resize", schedule);
 			motion.removeEventListener("change", schedule);
+			silent = true;
 			context?.revert();
 			delete stage.dataset.pinned;
 		};
-	}, [ref, headingRef]);
+	}, [ref, headingRef, playMerge]);
 }

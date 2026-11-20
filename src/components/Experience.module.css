@@ -24,6 +24,44 @@
 	pointer-events: none;
 }
 
+.mergeSound {
+	display: flex;
+	min-height: 44px;
+	margin-inline-start: auto;
+	padding-inline: 4px;
+	align-items: center;
+	gap: 6px;
+	background: #0b0d0b;
+	color: #bac3b4;
+	font:
+		11px "Space Mono",
+		monospace;
+	cursor: pointer;
+}
+
+.mergeSound span {
+	min-width: 4ch;
+	padding-inline: 2px;
+	border: 1px solid #3b4b33;
+	text-align: center;
+}
+
+.mergeSound[aria-pressed="true"] span {
+	border-color: #50864c;
+	color: #61cf5a;
+}
+
+.mergeSound:focus-visible {
+	outline: 2px solid #61cf5a;
+	outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.mergeSound {
+		display: none;
+	}
+}
+
 .mainLabel::after {
 	content: "";
 	top: 100%;
@@ -271,10 +309,14 @@
 	left: var(--lane);
 	width: 10px;
 	height: 10px;
+	transform: translate(-50%, -50%);
+}
+
+.node,
+.mergeDot {
 	border: 2px solid var(--branch);
 	border-radius: 50%;
 	background: #0b0d0b;
-	transform: translate(-50%, -50%);
 }
 
 .mergeNode,
@@ -291,7 +333,40 @@
 	left: var(--education-lane);
 }
 .joystickMergeNode {
-	border-color: #a9bb95;
+	--branch: #a9bb95;
+}
+
+.mergeDot {
+	position: absolute;
+	inset: 0;
+}
+
+.mergeSpark {
+	position: absolute;
+	inset: 0;
+	margin: auto;
+	width: 8px;
+	height: 8px;
+	clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+	color: var(--branch);
+	background: currentColor;
+	opacity: 0;
+}
+
+.mergeSpark:nth-child(even) {
+	width: 13px;
+	height: 13px;
+	color: color-mix(in srgb, var(--branch) 45%, #e8ece5);
+	clip-path: polygon(
+		50% 0,
+		65% 35%,
+		100% 50%,
+		65% 65%,
+		50% 100%,
+		35% 65%,
+		0 50%,
+		35% 35%
+	);
 }
 
 .mergeDate,
@@ -324,18 +399,35 @@
 	inset: var(--node-top) auto auto var(--lane);
 }
 .branchName {
+	--label-offset: calc(-50% - 6px);
+	--merge-badge-size: calc(1 + var(--merge-center, 0) * 0.18);
+	position: relative;
 	display: block;
 	width: max-content;
 	line-height: 1.5;
-	padding-inline: 4px;
-	translate: calc(-100% - 6px) -50%;
+	padding-inline: 6px;
+	translate: calc(-50% + var(--label-offset) * (1 - var(--merge-center, 0)))
+		-50%;
+	scale: calc(var(--merge-scale-x, 1) * var(--merge-badge-size))
+		calc(var(--merge-scale-y, 1) * var(--merge-badge-size));
 	color: var(--branch);
 	background: #0b0d0b;
+	border-radius: 9999px;
 }
+
+.branchName::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border: 1px solid currentColor;
+	border-radius: inherit;
+	opacity: var(--merge-center, 0);
+}
+
 .monero .branchName,
 .bitcoin .branchName,
 .education .branchName {
-	translate: 6px -50%;
+	--label-offset: calc(50% + 6px);
 }
 
 .chapter h3 {

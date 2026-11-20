@@ -2,6 +2,21 @@ import { useRef } from "react";
 import styles from "./Experience.module.css";
 import SectionHeading from "./SectionHeading";
 import { useCommitHistoryScroll } from "./useCommitHistoryScroll";
+import { useMergeSound } from "./useMergeSound";
+
+function MergeNode({ joystick = false }: { joystick?: boolean }) {
+	return (
+		<span
+			aria-hidden="true"
+			className={joystick ? styles.joystickMergeNode : styles.mergeNode}
+		>
+			<span className={styles.mergeDot} />
+			{["nw", "n", "ne", "se", "s", "sw"].map((direction) => (
+				<span key={direction} className={styles.mergeSpark} />
+			))}
+		</span>
+	);
+}
 
 export default function Experience({
 	embedded = false,
@@ -10,7 +25,8 @@ export default function Experience({
 }) {
 	const stage = useRef<HTMLDivElement>(null);
 	const heading = useRef<HTMLDivElement>(null);
-	useCommitHistoryScroll(stage, heading);
+	const sound = useMergeSound();
+	useCommitHistoryScroll(stage, heading, sound.play);
 
 	const today = new Date();
 	const currentDate = today.toISOString().slice(0, 10);
@@ -34,6 +50,15 @@ export default function Experience({
 				note="WORK & EDUCATION"
 			>
 				<div className={styles.mainLabel}>main</div>
+				<button
+					type="button"
+					className={styles.mergeSound}
+					aria-pressed={sound.enabled}
+					onClick={sound.toggle}
+				>
+					sound{" "}
+					<span aria-hidden="true">{sound.enabled ? "on" : "off"}</span>
+				</button>
 			</SectionHeading>
 			<div ref={stage} className={styles.storyStage}>
 				<div className={styles.storyTrack}>
@@ -111,7 +136,7 @@ export default function Experience({
 								>
 									<path d="M112 0 V16 C112 44 80 36 80 64" />
 								</svg>
-								<span className={styles.mergeNode} />
+								<MergeNode />
 								<span className={styles.branchLabel}>
 									<span className={styles.branchName}>monero-bounty</span>
 								</span>
@@ -164,7 +189,7 @@ export default function Experience({
 								>
 									<path d="M48 0 V16 C48 44 80 36 80 64" />
 								</svg>
-								<span className={styles.joystickMergeNode} />
+								<MergeNode joystick />
 								<svg
 									aria-hidden="true"
 									className={styles.fork}
@@ -224,7 +249,7 @@ export default function Experience({
 								>
 									<path d="M40 0 V16 C40 44 64 36 64 64" />
 								</svg>
-								<span className={styles.mergeNode} />
+								<MergeNode />
 								<span className={styles.branchLabel}>
 									<span className={styles.branchName}>red-ribbon-kiosk</span>
 								</span>
@@ -276,7 +301,7 @@ export default function Experience({
 								>
 									<path d="M112 0 V16 C112 44 80 36 80 64" />
 								</svg>
-								<span className={styles.mergeNode} />
+								<MergeNode />
 								<span className={styles.branchLabel}>
 									<span className={styles.branchName}>bitcoin.com</span>
 								</span>

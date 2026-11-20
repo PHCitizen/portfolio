@@ -3,7 +3,25 @@ import styles from "./Experience.module.css";
 
 export const NODE_BEAT = 0.3;
 
-function createBranchLabelUpdates(track: HTMLElement, origin: number) {
+// These beats are measured in graph pixels so they remain tied to the scroll.
+const MERGE_APPROACH = 108;
+const MERGE_COLLAPSE = 30;
+const MERGE_POP = 14;
+const SPARK_HOLD = 26;
+const SPARKS = [
+	{ x: -30, y: -29, delay: 2, duration: 88 },
+	{ x: 2, y: -40, delay: 8, duration: 73 },
+	{ x: 41, y: -22, delay: 0, duration: 98 },
+	{ x: 30, y: 29, delay: 5, duration: 84 },
+	{ x: -8, y: 35, delay: 12, duration: 76 },
+	{ x: -40, y: 17, delay: 3, duration: 93 },
+];
+
+function createBranchLabelUpdates(
+	track: HTMLElement,
+	origin: number,
+	draw: gsap.core.Timeline,
+) {
 	return Array.from(
 		track.querySelectorAll<HTMLElement>(`.${styles.branchLabel}`),
 	).flatMap((label) => {
@@ -59,6 +77,28 @@ function createBranchLabelUpdates(track: HTMLElement, origin: number) {
 		const start = geometry[0].start;
 		const last = geometry[geometry.length - 1];
 		const fadeDistance = 12;
+		const name = label.querySelector(`.${styles.branchName}`);
+		if (!isEducation && name) {
+			// Center the moving label on the join, hold it, then fold into the dot.
+			draw.fromTo(
+				name,
+				{ "--merge-center": 0 },
+				{ "--merge-center": 1, duration: 38, ease: "power2.out" },
+				last.end - MERGE_APPROACH,
+			);
+			draw.fromTo(
+				name,
+				{ "--merge-scale-x": 1, "--merge-scale-y": 1, opacity: 1 },
+				{
+					"--merge-scale-x": 0.12,
+					"--merge-scale-y": 0.55,
+					opacity: 0,
+					duration: MERGE_COLLAPSE,
+					ease: "power2.inOut",
+				},
+				last.end - MERGE_COLLAPSE,
+			);
+		}
 		gsap.set(label, { left: 0, top: 0, x: 0, y: 0, opacity: 0 });
 		const setX = gsap.quickSetter(label, "x", "px");
 		const setY = gsap.quickSetter(label, "y", "px");
@@ -70,7 +110,7 @@ function createBranchLabelUpdates(track: HTMLElement, origin: number) {
 					Math.min(
 						1,
 						(time - start) / fadeDistance,
-						isEducation ? 1 : (last.end - time) / fadeDistance,
+						isEducation || time < last.end ? 1 : 0,
 					),
 				);
 				setOpacity(opacity);
@@ -90,17 +130,18 @@ function createBranchLabelUpdates(track: HTMLElement, origin: number) {
 }
 
 /** Timeline time is a vertical pixel offset from the top of the graph track. */
-export function createCommitGraphDraw(track: HTMLElement, list: HTMLElement) {
+export function createCommitGraphDraw(
+	track: HTMLElement,
+	list: HTMLElement,
+	onMerge: (node: Element) => void,
+) {
 	const draw = gsap.timeline({ paused: true, defaults: { ease: "none" } });
 	const origin = track.getBoundingClientRect().top;
 	const rect = (element: Element) => element.getBoundingClientRect();
 	const top = (element: Element) => rect(element).top - origin;
 	const center = (element: Element) => top(element) + rect(element).height / 2;
-	const updateBranchLabels = createBranchLabelUpdates(track, origin);
-	draw.eventCallback("onUpdate", () => {
-		const time = draw.time();
-		for (const update of updateBranchLabels) update(time);
-	});
+	const updateBranchLabels = createBranchLabelUpdates(track, origin, draw);
+	const impacts: { node: Element; at: number }[] = [];
 
 	const grow = (element: HTMLElement) => {
 		draw.fromTo(
@@ -135,10 +176,52 @@ export function createCommitGraphDraw(track: HTMLElement, list: HTMLElement) {
 		);
 	}
 
-	for (const node of list.querySelectorAll(
-		`.${styles.node}, .${styles.mergeNode}, .${styles.joystickMergeNode}`,
-	)) {
+	for (const node of list.querySelectorAll(`.${styles.node}`)) {
 		reveal(node, center(node));
+	}
+	for (const merge of list.querySelectorAll(
+		`.${styles.mergeNode}, .${styles.joystickMergeNode}`,
+	)) {
+		const dot = merge.querySelector(`.${styles.mergeDot}`);
+		if (!dot) continue;
+		const at = center(merge);
+		impacts.push({ node: merge, at });
+		reveal(dot, at, 6);
+		draw.fromTo(
+			dot,
+			{ scale: 0.95 },
+			{ scale: 1.85, duration: MERGE_POP, ease: "power2.out" },
+			at,
+		);
+		draw.to(
+			dot,
+			{ scale: 1, duration: 36, ease: "power2.out" },
+			at + MERGE_POP,
+		);
+		merge.querySelectorAll(`.${styles.mergeSpark}`).forEach((spark, index) => {
+			const { x, y, delay, duration } = SPARKS[index];
+			draw.fromTo(
+				spark,
+				{ x: x * 0.18, y: y * 0.18, opacity: 0, scale: 0.95 },
+				{ x, y, duration, ease: "power2.out" },
+				at + delay,
+			);
+			draw.to(
+				spark,
+				{ opacity: 1, duration: 10, ease: "power2.out" },
+				at + delay,
+			);
+			draw.to(
+				spark,
+				{
+					opacity: 0,
+					scale: 0.6,
+					duration: duration - SPARK_HOLD,
+					ease: "power2.out",
+				},
+				at + delay + SPARK_HOLD,
+			);
+		});
 	}
 	for (const date of list.querySelectorAll(
 		`.${styles.mergeDate}, .${styles.moneroDate}`,
@@ -147,6 +230,17 @@ export function createCommitGraphDraw(track: HTMLElement, list: HTMLElement) {
 	}
 	const present = track.querySelector(`.${styles.present}`);
 	if (present) reveal(present, top(present), 16);
+
+	// Check later merge points first when a large scroll step crosses several.
+	impacts.reverse();
+	let previous = 0;
+	draw.eventCallback("onUpdate", () => {
+		const time = draw.time();
+		for (const update of updateBranchLabels) update(time);
+		const impact = impacts.find(({ at }) => previous < at && at <= time);
+		previous = time;
+		if (impact) onMerge(impact.node);
+	});
 
 	return { draw, center };
 }
