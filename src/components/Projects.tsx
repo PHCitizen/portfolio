@@ -89,13 +89,15 @@ export default function Projects() {
 	const [expanded, setExpanded] = useState<string | null>(null);
 	const runwayRef = useRef<HTMLDivElement>(null);
 	const stageRef = useRef<HTMLDivElement>(null);
+	const headingRef = useRef<HTMLDivElement>(null);
 	const rowRef = useRef<HTMLElement>(null);
 
 	useEffect(() => {
 		const runway = runwayRef.current;
 		const stage = stageRef.current;
+		const heading = headingRef.current;
 		const row = rowRef.current;
-		if (!runway || !stage || !row) return;
+		if (!runway || !stage || !heading || !row) return;
 
 		const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
 		let distance = 0;
@@ -126,23 +128,30 @@ export default function Projects() {
 		};
 
 		const measure = () => {
+			const headingHeight = heading.offsetHeight;
+			const rowHeight = row.offsetHeight;
+			stage.style.setProperty("--project-heading-height", `${headingHeight}px`);
+			stage.style.setProperty("--project-row-height", `${rowHeight}px`);
 			stickyTop = Number.parseFloat(getComputedStyle(stage).top);
-			// Leave short viewports and reduced-motion users in normal document flow.
-			const fits = stage.offsetHeight + stickyTop + 8 <= window.innerHeight;
+			// Check the content without the centering gap so toggling it can't affect eligibility.
+			const fits =
+				headingHeight + rowHeight + stickyTop + 8 <= window.innerHeight;
 			const nextDistance =
 				!motion.matches && fits ? row.scrollWidth - row.clientWidth : 0;
-			if (nextDistance === distance) return;
-			distance = nextDistance;
-			lastPosition = -1;
-			stage.toggleAttribute("data-scroll-driven", distance > 0);
-			// Keep the section pinned through the lead-in and the full horizontal travel.
-			const travel = distance > 0 ? SCROLL_LEAD_IN + distance : 0;
-			runway.style.setProperty("--project-travel", `${travel}px`);
+			if (nextDistance !== distance) {
+				distance = nextDistance;
+				lastPosition = -1;
+				stage.toggleAttribute("data-scroll-driven", distance > 0);
+				// Keep the section pinned through the lead-in and the full horizontal travel.
+				const travel = distance > 0 ? SCROLL_LEAD_IN + distance : 0;
+				runway.style.setProperty("--project-travel", `${travel}px`);
+			}
 			onScroll();
 		};
 
 		const observer = new ResizeObserver(measure);
-		observer.observe(stage);
+		observer.observe(heading);
+		observer.observe(row);
 		motion.addEventListener("change", measure);
 		window.addEventListener("resize", measure);
 		window.addEventListener("scroll", onScroll, { passive: true });
@@ -155,6 +164,8 @@ export default function Projects() {
 			window.removeEventListener("scroll", onScroll);
 			cancelAnimationFrame(frame);
 			stage.removeAttribute("data-scroll-driven");
+			stage.style.removeProperty("--project-heading-height");
+			stage.style.removeProperty("--project-row-height");
 			runway.style.removeProperty("--project-travel");
 		};
 	}, []);
@@ -172,37 +183,40 @@ export default function Projects() {
 					ref={stageRef}
 					className="group/work top-(--site-header-height) data-scroll-driven:sticky"
 				>
-					<SectionHeading
-						number="03"
-						title="Selected work"
-						note="BUILT. SHIPPED. ITERATED."
-						className="mb-2 static!"
-					/>
-					<p
-						id="projects-scroll-hint"
-						className="mb-3 font-mono text-xs text-[#9aac90]"
-					>
-						<span className="group-data-scroll-driven/work:hidden">
-							Scroll across to browse
-						</span>
-						<span className="hidden group-data-scroll-driven/work:inline">
-							Scroll down to browse
-						</span>
-					</p>
+					<div ref={headingRef} className="pb-3">
+						<SectionHeading
+							number="03"
+							title="Selected work"
+							note="BUILT. SHIPPED. ITERATED."
+							className="mb-2"
+							sticky={false}
+						/>
+						<p
+							id="projects-scroll-hint"
+							className="font-mono text-xs text-[#9aac90]"
+						>
+							<span className="group-data-scroll-driven/work:hidden">
+								Scroll across to browse
+							</span>
+							<span className="hidden group-data-scroll-driven/work:inline">
+								Scroll down to browse
+							</span>
+						</p>
+					</div>
 					<section
 						ref={rowRef}
 						aria-label="Projects, newest first"
 						aria-describedby="projects-scroll-hint"
 						// biome-ignore lint/a11y/noNoninteractiveTabindex: Enables keyboard scrolling in the project row.
 						tabIndex={0}
-						className="-mx-1 flex gap-5 overflow-x-auto overscroll-x-contain px-1 pb-3 [scrollbar-color:#50864c_#10140f] [scrollbar-width:thin] focus-visible:-outline-offset-2 focus-visible:outline-[#61cf5a]"
+						className="-mx-1 flex gap-5 overflow-x-auto overscroll-x-contain px-1 pb-3 [scrollbar-color:#50864c_#10140f] [scrollbar-width:thin] focus-visible:-outline-offset-2 focus-visible:outline-[#61cf5a] max-lg:group-data-scroll-driven/work:mt-[max(0px,calc((100svh-var(--project-row-height))/2-var(--site-header-height)-var(--project-heading-height)))]"
 					>
 						{newestProjects.map((project) => (
 							<article
 								className="group flex shrink-0 basis-[min(88%,22rem)] flex-col border border-[#3b4b33]/60 bg-[#0f120e] transition-colors hover:border-[#50864c] lg:basis-[30%]"
 								key={project.id}
 							>
-								<div className="relative flex h-[clamp(9rem,23svh,13rem)] items-center justify-center overflow-hidden border-b border-[#3b4b33]/60 bg-[linear-gradient(#61cf5a05_1px,transparent_1px),linear-gradient(90deg,#61cf5a05_1px,transparent_1px)] bg-[size:20px_20px]">
+								<div className="relative flex h-[clamp(8rem,18svh,11rem)] items-center justify-center overflow-hidden lg:h-[clamp(9rem,23svh,13rem)] border-b border-[#3b4b33]/60 bg-[linear-gradient(#61cf5a05_1px,transparent_1px),linear-gradient(90deg,#61cf5a05_1px,transparent_1px)] bg-[size:20px_20px]">
 									<span className="absolute left-4 top-3 font-mono text-xs tracking-widest text-[#586451]">
 										PROJECT_{project.id}
 									</span>
