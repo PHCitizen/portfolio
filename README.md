@@ -69,6 +69,24 @@ pnpm deploy:pages
 
 The intended production URL is https://jayveeembog.pages.dev. If the project already exists, confirm its production branch is `master` before deploying; a different branch produces a preview deployment.
 
+### Enable the Telegram contact form
+
+1. Create a **Managed** widget in Cloudflare Turnstile and allow every hostname that will serve the form (for example, `jayveeembog.pages.dev` and your custom domain).
+2. Put `VITE_TURNSTILE_SITE_KEY=<your widget site key>` in a local `.env` file, or set it in your build environment. This is the **public** key: Vite reads it when you run `pnpm build:pages`. When using `pnpm deploy:pages` from your machine, a Pages dashboard variable alone won’t reach that local build.
+3. Create a Telegram bot with `@BotFather`. In Telegram, open the bot’s chat and press **Start** before testing delivery. Get your destination chat ID from an update sent to your bot (via Telegram’s `getUpdates` API, keeping the token private).
+4. In **Workers & Pages → jayveeembog → Settings → Variables and Secrets**, add these **runtime secrets** to the environment you’re deploying to (Production or Preview):
+
+   | Secret | Value |
+   | --- | --- |
+   | `TURNSTILE_SECRET_KEY` | The private key for the same Turnstile widget |
+   | `TELEGRAM_BOT_TOKEN` | The token from `@BotFather` |
+   | `TELEGRAM_CHAT_ID` | The destination Telegram chat ID |
+
+   Do not prefix these with `VITE_`, commit them, or use them in client code. The `/api/contact` endpoint runs in the existing Pages worker, so there’s no separate Function to deploy.
+5. Run `pnpm deploy:pages` and send a test message from the live site. Confirm it arrives in Telegram and includes the sender’s email.
+
+For local Pages testing, put the three runtime secrets in an untracked `.dev.vars` file in the project root and run `pnpm build:pages` then `pnpm preview:pages`. Use a development widget that permits your local hostname and a test Telegram chat. The server checks that the verified Turnstile token was issued for the hostname receiving the submission. If the public key isn’t configured, the site keeps the existing email option available and reports the form as unavailable.
+
 ## Deploy with Nitro to Node.js
 
 This project uses Nitro as a generic server adapter, so it can run on any Node-compatible host.

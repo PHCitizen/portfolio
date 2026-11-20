@@ -13,6 +13,7 @@ const config = defineConfig(({ command, mode }) => ({
   plugins: [
     devtools(),
     nitro({
+      serverDir: 'server',
       rollupConfig: { external: [/^@sentry\//] },
       ...(command === 'build' && mode === 'pages'
         ? {

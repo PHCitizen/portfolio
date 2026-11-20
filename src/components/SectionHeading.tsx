@@ -7,6 +7,7 @@ export default function SectionHeading({
 	ref,
 	children,
 	className = "mb-10",
+	sticky = true,
 }: {
 	number: string;
 	title: string;
@@ -14,11 +15,12 @@ export default function SectionHeading({
 	ref?: Ref<HTMLDivElement>;
 	children?: ReactNode;
 	className?: string;
+	sticky?: boolean;
 }) {
 	return (
 		<div
 			ref={ref}
-			className={`sticky top-(--site-header-height) z-10 bg-[#0b0d0b] pt-4 pb-2 ${className}`}
+			className={`bg-[#0b0d0b] pt-4 pb-2 ${sticky ? "sticky top-(--site-header-height) z-10" : ""} ${className}`}
 		>
 			<div className="flex items-center gap-6">
 				<h2 className="min-w-0 text-2xl font-semibold tracking-tight sm:text-[32px]">
