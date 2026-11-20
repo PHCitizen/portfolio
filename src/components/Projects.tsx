@@ -40,6 +40,30 @@ function ProjectVisual({ type }: { type: string }) {
 				</div>
 			</div>
 		);
+	if (type === "hackathon")
+		return (
+			<div
+				className="flex w-[220px] -rotate-3 items-center gap-4 border border-[#3b4b33] bg-[#0c120b] p-4"
+				aria-hidden="true"
+			>
+				<svg
+					aria-hidden="true"
+					className="size-10 shrink-0 text-[#61cf5a]"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					strokeWidth="1.5"
+					strokeLinecap="round"
+					strokeLinejoin="round"
+				>
+					<path d="M8 21h8m-4-5v5M7 4h10v7a5 5 0 0 1-10 0V4ZM7 6H3v2a4 4 0 0 0 4 4m10-6h4v2a4 4 0 0 1-4 4" />
+				</svg>
+				<div className="border-l border-[#3b4b33] pl-4 font-mono">
+					<div className="text-xs text-[#93aa87]">BUILD4CAMPUS</div>
+					<div className="mt-1 text-2xl text-[#61cf5a]">TOP 10</div>
+				</div>
+			</div>
+		);
 	return (
 		<div className="grid w-[220px] -rotate-3 grid-cols-11 gap-1 border border-[#3b4b33] bg-[#0b100a] p-2">
 			{Array.from({ length: 77 }, (_, i) => (
@@ -66,7 +90,7 @@ export default function Projects() {
 				title="Selected work"
 				note="BUILT. SHIPPED. ITERATED."
 			/>
-			<div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+			<div className="grid gap-5 md:grid-cols-2">
 				{projects.map((project) => (
 					<article
 						className="group flex flex-col border border-[#3b4b33]/60 bg-[#0f120e] transition-colors hover:border-[#50864c]"
@@ -100,7 +124,7 @@ export default function Projects() {
 									</span>
 								))}
 							</div>
-							<div className="mt-5 flex items-center justify-between border-t border-[#3b4b33]/60 pt-4">
+							<div className="mt-5 flex flex-wrap items-center justify-between gap-2 border-t border-[#3b4b33]/60 pt-4">
 								<span className="font-mono text-xs tracking-wide text-[#7e877b]">
 									{project.badge}
 								</span>
@@ -110,9 +134,14 @@ export default function Projects() {
 										href={project.href}
 										target="_blank"
 										rel="noreferrer"
-										aria-label={`View ${project.name} on GitHub`}
+										aria-label={`${project.linkLabel}: ${project.name}`}
 									>
-										↗
+										{project.visual === "hackathon" && (
+											<span className="mr-2 font-mono text-xs">
+												{project.linkLabel}
+											</span>
+										)}
+										<span aria-hidden="true">↗</span>
 									</a>
 								) : (
 									<button

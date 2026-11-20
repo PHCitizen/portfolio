@@ -162,7 +162,7 @@ export default function DesktopStory() {
 		},
 		{
 			name: "projects.deck",
-			kind: "3 slides · selected work",
+			kind: `${projects.length} slides · selected work`,
 			app: "Slides",
 			action: () => jump(2),
 		},
@@ -461,7 +461,7 @@ export default function DesktopStory() {
 														target="_blank"
 														rel="noreferrer"
 													>
-														View repository ↗
+														{project.linkLabel} ↗
 													</a>
 												) : (
 													<span>University of Rizal System</span>
