@@ -17,9 +17,7 @@
 .mainLabel {
 	position: absolute;
 	inset: 100% 0 auto;
-	width: max-content;
-	margin-inline: auto;
-	padding: 0 4px;
+	/* Keep scrolling branches from drawing alongside the desktop label. */
 	background: #0b0d0b;
 	pointer-events: none;
 }
@@ -501,7 +499,8 @@
 	}
 	.mainLabel {
 		inset-inline: var(--graph-axis) auto;
-		margin-inline: 0;
+		width: max-content;
+		padding-inline: 4px;
 		translate: -50%;
 	}
 	.mainLabel::after {
