@@ -9,9 +9,9 @@ function ProjectVisual({ type }: { type: string }) {
 				<span className="flex size-16 -rotate-12 items-center justify-center rounded-full border border-[#61cf5a]/60 bg-[#61cf5a]/10 font-mono text-4xl text-[#61cf5a] shadow-[0_0_30px_#61cf5a10]">
 					₿
 				</span>
-				<div className="flex flex-col items-center gap-2 font-mono text-[#50864c]">
+				<div className="flex flex-col items-center gap-2 font-mono text-[#61cf5a]">
 					<span>← ─ ─ →</span>
-					<small className="text-[6px] tracking-wider">
+					<small className="text-[8px] tracking-wider">
 						TRUSTLESS PROTOCOL
 					</small>
 					<span>← ─ ─ →</span>
@@ -79,9 +79,6 @@ export default function Projects() {
 							<div className="transition-transform duration-500 group-hover:scale-105">
 								<ProjectVisual type={project.visual} />
 							</div>
-							<span className="absolute bottom-3 right-4 text-[#50864c]">
-								↗
-							</span>
 						</div>
 						<div className="flex flex-1 flex-col p-5">
 							<span className="font-mono text-xs tracking-[0.08em] text-[#63ad58]">

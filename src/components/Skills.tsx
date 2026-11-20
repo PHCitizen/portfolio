@@ -84,7 +84,6 @@ export default function Skills() {
 				title="Tools of the trade"
 				note="MY EVERYDAY STACK"
 			/>
-			<p className={styles.hint}>Hover or tap an icon to reveal the tool.</p>
 			<fieldset
 				className={styles.tools}
 				aria-label="Tools and technologies"
