@@ -1,13 +1,3 @@
-.legend {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 20px;
-	margin-bottom: 24px;
-	font-size: 14px;
-	color: #a2ab9a;
-}
-
 .direction,
 .mainLabel,
 .continuation {
@@ -24,8 +14,23 @@
 	color: #61cf5a;
 }
 .mainLabel {
-	padding-bottom: 16px;
+	position: absolute;
+	inset: 100% 0 auto;
+	width: max-content;
+	margin-inline: auto;
+	padding: 0 4px;
+	background: #0b0d0b;
+	pointer-events: none;
 }
+
+.mainLabel::after {
+	content: "";
+	top: 100%;
+	height: calc(var(--graph-gap) - 1lh + 1px);
+	transform: scaleY(var(--connector-progress, 1));
+	transform-origin: top;
+}
+
 .continuation {
 	padding-bottom: 8px;
 }
@@ -75,14 +80,60 @@
 	padding: 0;
 }
 
-.timeline::before {
-	content: "";
+.mainLabel::after,
+.storyStage[data-pinned] .storyTrack::before,
+.trunk {
 	position: absolute;
 	left: calc(50% - 1px);
-	top: 0;
-	bottom: 0;
 	width: 2px;
 	background: #61cf5a;
+}
+
+.trunk {
+	top: 0;
+	bottom: 0;
+	transform-origin: top center;
+}
+
+.storyTrack {
+	position: relative;
+}
+
+/* Bridge any space above the moving graph; the pinned stage clips the line. */
+.storyStage[data-pinned] .storyTrack::before {
+	content: "";
+	bottom: 100%;
+	height: var(--connector-bridge-height, 0px);
+	transform: scaleY(var(--connector-bridge-progress, 0));
+	transform-origin: top;
+	pointer-events: none;
+}
+
+.stickyHeading {
+	--graph-gap: 32px;
+	position: sticky;
+	z-index: 2;
+	top: 0;
+	margin-bottom: var(--graph-gap);
+	padding-block: 8px;
+	background: #0b0d0b;
+}
+
+.stickyHeading > :first-child {
+	margin-bottom: 0;
+}
+
+.storyStage[data-pinned] {
+	height: calc(100dvh - var(--story-heading-height, 0px));
+	overflow: clip;
+}
+
+.nodeFill {
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: var(--branch);
+	opacity: 0;
 }
 
 .chapter {
@@ -279,10 +330,6 @@
 }
 
 @media (max-width: 639px) {
-	.legend {
-		flex-wrap: wrap;
-		gap: 8px;
-	}
 	.chapter article {
 		width: calc(50% - 28px);
 		overflow-wrap: anywhere;
