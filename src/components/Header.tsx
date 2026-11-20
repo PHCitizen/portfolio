@@ -11,9 +11,13 @@ export default function Header() {
 				href="/#"
 				aria-label="Jayvee Embog home"
 			>
-				<span className="flex size-9 items-center justify-center border border-[#61cf5a]/40 bg-[#61cf5a]/5 font-mono text-lg text-[#61cf5a]">
-					je
-				</span>
+				<img
+					src="/assets/logo.png"
+					alt=""
+					width={40}
+					height={40}
+					className="size-10 shrink-0 object-contain"
+				/>
 				<span>
 					jayvee<span className="text-[#61cf5a]">.dev_</span>
 				</span>
@@ -47,7 +51,7 @@ export default function Header() {
 				className="hidden items-center gap-4 border border-[#3b4b33] px-4 py-2.5 font-mono text-sm transition-colors hover:border-[#61cf5a] hover:text-[#61cf5a] xl:flex"
 				href="mailto:embogjayvee@gmail.com"
 			>
-				Let’s talk 
+				Let’s talk
 			</a>
 		</header>
 	);
