@@ -63,7 +63,7 @@
 }
 
 .educationPresentNode {
-	left: calc(50% + var(--right-lane-offset));
+	left: calc(50% - var(--education-lane-offset));
 	border-color: var(--education-branch);
 }
 
@@ -105,7 +105,9 @@
 .storyTrack {
 	--rail-width: 160px;
 	--right-lane: 70%;
-	--right-lane-offset: calc(var(--rail-width) * 0.2);
+	/* Keep education inside the older Joystick lane while both are active. */
+	--education-lane: 40%;
+	--education-lane-offset: calc(var(--rail-width) * 0.1);
 	--education-branch: #a9bb95;
 	position: relative;
 }
@@ -145,11 +147,12 @@
 }
 
 .chapter article {
-	width: calc(50% - 72px);
+	--article-gap: 72px;
+	width: calc(50% - var(--article-gap));
 }
 .monero article,
-.education article {
-	margin-left: calc(50% + 72px);
+.bitcoin article {
+	margin-left: calc(50% + var(--article-gap));
 }
 
 .joystick {
@@ -163,12 +166,12 @@
 }
 .education {
 	--branch: var(--education-branch);
-	--lane: var(--right-lane);
+	--lane: var(--education-lane);
 	padding-bottom: 96px;
 }
 .bitcoin {
 	--branch: #61cf5a;
-	--lane: 48px;
+	--lane: var(--right-lane);
 	/* Separate this fork from the December 2023 merge without breaking either rail. */
 	--fork-gap: 80px;
 	padding-top: calc(32px + var(--fork-gap));
@@ -234,7 +237,7 @@
 }
 .branchLine.educationContinues {
 	--branch: var(--education-branch);
-	--lane: var(--right-lane);
+	--lane: var(--education-lane);
 	top: 0;
 	bottom: 0;
 }
@@ -293,9 +296,8 @@
 .moneroDate {
 	bottom: 52px;
 }
-.education .mergeDate,
 .bitcoin .mergeDate {
-	right: calc(50% + 16px);
+	right: calc(50% + var(--education-lane-offset) + 16px);
 	left: auto;
 }
 
@@ -368,12 +370,8 @@
 
 @media (max-width: 639px) {
 	.chapter article {
-		width: calc(50% - 28px);
+		--article-gap: 28px;
 		overflow-wrap: anywhere;
-	}
-	.monero article,
-	.education article {
-		margin-left: calc(50% + 28px);
 	}
 	.storyTrack {
 		--rail-width: 80px;
@@ -382,8 +380,7 @@
 		transform: scaleX(0.5);
 		transform-origin: left center;
 	}
-	.joystick,
-	.bitcoin {
+	.joystick {
 		--lane: 24px;
 	}
 	.joystickContinues {

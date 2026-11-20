@@ -171,7 +171,7 @@ export default function Experience({
 									viewBox="0 0 160 64"
 									fill="none"
 								>
-									<path d="M80 0 C80 28 112 20 112 48 V64" />
+									<path d="M80 0 C80 28 64 20 64 48 V64" />
 								</svg>
 								<span className={styles.branchLine} />
 								<span className={styles.node}>
@@ -210,7 +210,7 @@ export default function Experience({
 									viewBox="0 0 160 64"
 									fill="none"
 								>
-									<path d="M80 0 C80 28 48 20 48 48 V64" />
+									<path d="M80 0 C80 28 112 20 112 48 V64" />
 								</svg>
 								<span className={styles.branchLine} />
 								<span className={styles.node}>
@@ -222,7 +222,7 @@ export default function Experience({
 									viewBox="0 0 160 64"
 									fill="none"
 								>
-									<path d="M48 0 V16 C48 44 80 36 80 64" />
+									<path d="M112 0 V16 C112 44 80 36 80 64" />
 								</svg>
 								<span className={styles.mergeNode} />
 							</div>

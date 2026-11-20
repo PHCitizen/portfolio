@@ -36,7 +36,8 @@ export function useCommitHistoryScroll(
 
 		gsap.registerPlugin(ScrollTrigger);
 		const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-		const mobile = window.matchMedia("(max-width: 639px)");
+		const entrySide = (part: HTMLElement) =>
+			part.offsetLeft >= stage.clientWidth / 2 ? 1 : -1;
 		let context: gsap.Context | undefined;
 		let focus: ((event: FocusEvent) => void) | undefined;
 		let frame = 0;
@@ -54,7 +55,7 @@ export function useCommitHistoryScroll(
 				headerOffset,
 				track.offsetHeight,
 				motion.matches,
-				mobile.matches,
+				...commits.map(({ part }) => part.offsetLeft),
 				...commits.map(({ part }) => part.offsetHeight),
 			].join(":");
 			if (size === previousSize) return;
@@ -106,10 +107,7 @@ export function useCommitHistoryScroll(
 					}
 					for (const { row, part } of commits) {
 						const move = !motion.matches;
-						const side =
-							mobile.matches || part.offsetLeft >= stage.clientWidth / 2
-								? 1
-								: -1;
+						const side = entrySide(part);
 						gsap.fromTo(
 							part,
 							{
@@ -165,7 +163,7 @@ export function useCommitHistoryScroll(
 						node,
 						fill,
 						pan: center(part) - screenMidpoint,
-						direction: mobile.matches || part.offsetLeft >= width / 2 ? 1 : -1,
+						direction: entrySide(part),
 					};
 				});
 
@@ -348,14 +346,12 @@ export function useCommitHistoryScroll(
 		stage.addEventListener("focusin", onFocus);
 		window.addEventListener("resize", schedule);
 		motion.addEventListener("change", schedule);
-		mobile.addEventListener("change", schedule);
 		return () => {
 			observer.disconnect();
 			cancelAnimationFrame(frame);
 			stage.removeEventListener("focusin", onFocus);
 			window.removeEventListener("resize", schedule);
 			motion.removeEventListener("change", schedule);
-			mobile.removeEventListener("change", schedule);
 			context?.revert();
 			delete stage.dataset.pinned;
 		};
