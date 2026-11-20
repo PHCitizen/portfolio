@@ -79,50 +79,18 @@
 }
 
 .drawing {
-	background: radial-gradient(ellipse at center, #152312, transparent 72%);
+	width: 100%;
+	height: auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-.drawing svg {
+.drawing img {
 	display: block;
 	width: 100%;
 	height: auto;
-}
-
-.traces {
-	stroke: #3b4b33;
-	stroke-width: 1.5;
-}
-
-.traces circle,
-.nodes circle {
-	fill: #0b0d0b;
-}
-
-.traceSignal,
-.core,
-.nodes {
-	stroke: #61cf5a;
-	stroke-width: 2;
-}
-
-.core path:first-child {
-	fill: #111c10;
-}
-
-@keyframes draw-signal {
-	from {
-		stroke-dashoffset: 1;
-	}
-	to {
-		stroke-dashoffset: 0;
-	}
-}
-
-@media (prefers-reduced-motion: no-preference) {
-	.traceSignal {
-		stroke-dasharray: 1;
-		animation: draw-signal 800ms cubic-bezier(0.23, 1, 0.32, 1) both;
-	}
+	max-width: 500px;
 }
 
 @media (max-width: 700px) {
