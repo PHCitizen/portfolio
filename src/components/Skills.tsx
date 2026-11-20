@@ -1,7 +1,79 @@
+import { useState } from "react";
 import { skillGroups } from "../data/portfolio";
+import { toolVisuals } from "../data/toolVisuals";
 import SectionHeading from "./SectionHeading";
+import styles from "./Skills.module.css";
+import ToolArtwork from "./ToolArtwork";
+
+function ToolPanel({
+	group,
+	index,
+	active,
+	onActivate,
+}: {
+	group: (typeof skillGroups)[number];
+	index: number;
+	active: boolean;
+	onActivate: (index: number) => void;
+}) {
+	return (
+		<article
+			className={styles.panel}
+			data-active={active}
+			onFocus={() => onActivate(index)}
+			onPointerEnter={(event) => {
+				if (event.pointerType === "mouse") onActivate(index);
+			}}
+		>
+			<div className={styles.panelHeading}>
+				<span className={styles.categoryIcon}>
+					<ToolArtwork
+						kind={["contract", "api", "solver", "socket", "signature"][index]}
+					/>
+				</span>
+				<h3>{group.name}</h3>
+			</div>
+			<div className={styles.items}>
+				{group.items.map((item) => {
+					const visual = toolVisuals[item];
+					return (
+						<button
+							type="button"
+							className={styles.item}
+							key={item}
+							aria-label={item}
+							onClick={() => onActivate(index)}
+						>
+							<span
+								className={styles.toolIcon}
+								data-asset={visual.asset}
+								aria-hidden="true"
+							>
+								{visual.asset ? (
+									<img
+										src={`/assets/tools/${visual.asset}.svg`}
+										alt=""
+										width="40"
+										height="40"
+										loading="lazy"
+									/>
+								) : (
+									<ToolArtwork kind={visual.diagram ?? "api"} />
+								)}
+							</span>
+							<span className={styles.toolName} aria-hidden="true">
+								{item}
+							</span>
+						</button>
+					);
+				})}
+			</div>
+		</article>
+	);
+}
 
 export default function Skills() {
+	const [activeGroup, setActiveGroup] = useState<number | null>(null);
 	return (
 		<section
 			className="scroll-mt-10 border-t border-white/10 py-16 lg:py-20"
@@ -12,29 +84,29 @@ export default function Skills() {
 				title="Tools of the trade"
 				note="MY EVERYDAY STACK"
 			/>
-			<div className="grid gap-px border border-[#3b4b33]/60 bg-[#3b4b33]/60 sm:grid-cols-2 xl:grid-cols-5">
-				{skillGroups.map((group) => (
-					<article
-						className="bg-[#0d100c] p-5 transition-colors hover:bg-[#121910]"
+			<p className={styles.hint}>Hover or tap an icon to reveal the tool.</p>
+			<fieldset
+				className={styles.tools}
+				aria-label="Tools and technologies"
+				data-active={activeGroup ?? "none"}
+				onPointerLeave={(event) => {
+					if (event.pointerType === "mouse") setActiveGroup(null);
+				}}
+				onBlur={(event) => {
+					if (!event.currentTarget.contains(event.relatedTarget))
+						setActiveGroup(null);
+				}}
+			>
+				{skillGroups.map((group, index) => (
+					<ToolPanel
+						group={group}
+						index={index}
+						active={activeGroup === index}
 						key={group.name}
-					>
-						<span className="font-mono text-2xl text-[#61cf5a]">
-							{group.icon}
-						</span>
-						<h3 className="mb-5 mt-4 text-lg font-medium">{group.name}</h3>
-						<div className="flex flex-wrap gap-x-3 gap-y-2 xl:flex-col">
-							{group.items.map((item) => (
-								<span
-									className="font-mono text-sm leading-6 text-[#939e8b]"
-									key={item}
-								>
-									{item}
-								</span>
-							))}
-						</div>
-					</article>
+						onActivate={setActiveGroup}
+					/>
 				))}
-			</div>
+			</fieldset>
 			<div className="mt-8 flex flex-col gap-5 border border-[#3b4b33]/60 bg-[#61cf5a]/[0.02] p-6 sm:flex-row sm:items-center">
 				<span className="text-3xl text-[#61cf5a]">⌂</span>
 				<div>
