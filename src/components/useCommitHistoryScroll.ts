@@ -9,6 +9,7 @@ const STORY_SCRUB_SECONDS = 0.2;
 const EXIT_BLUR = 12;
 const CROSSING = 0.46;
 const FIRST_FORK_CLEARANCE = 32;
+const MOBILE_SLIDE = 48;
 
 export function useCommitHistoryScroll(
 	ref: RefObject<HTMLDivElement | null>,
@@ -38,6 +39,7 @@ export function useCommitHistoryScroll(
 
 		gsap.registerPlugin(ScrollTrigger);
 		const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+		const compact = window.matchMedia("(width < 40rem)");
 		const entrySide = (part: HTMLElement) =>
 			part.offsetLeft >= stage.clientWidth / 2 ? 1 : -1;
 		let context: gsap.Context | undefined;
@@ -68,6 +70,7 @@ export function useCommitHistoryScroll(
 				headerOffset,
 				track.offsetHeight,
 				motion.matches,
+				compact.matches,
 				...commits.map(({ part }) => part.offsetLeft),
 				...commits.map(({ part }) => part.offsetHeight),
 			].join(":");
@@ -83,6 +86,9 @@ export function useCommitHistoryScroll(
 					gsap.set(stage, { "--story-pin-offset": `${pinOffset}px` });
 					stage.dataset.pinned = "";
 				}
+				const mobile = compact.matches;
+				const width = stage.clientWidth;
+				const centeredX = mobile ? width / 2 - trunk.offsetLeft - 1 : 0;
 				const height = stage.clientHeight;
 				// Center cards in the viewport below the navigation, accounting for the heading.
 				const screenMidpoint = (height - headingHeight) / 2;
@@ -128,6 +134,34 @@ export function useCommitHistoryScroll(
 								scrub: true,
 							},
 						});
+					}
+					if (mobile) {
+						if (motion.matches) return;
+						// Tall content stays in native flow, sharing one rail so no card is clipped.
+						for (const [index, { row, part }] of commits.entries()) {
+							const entry = gsap.timeline({
+								defaults: { ease: "power2.out", duration: 1 },
+								scrollTrigger: {
+									trigger: row,
+									start: "top 95%",
+									end: "top 75%",
+									scrub: true,
+								},
+							});
+							if (index === 0) {
+								entry.fromTo([track, label], { x: centeredX }, { x: 0 }, 0);
+							}
+							entry.fromTo(
+								part,
+								{
+									x: MOBILE_SLIDE - (index === 0 ? centeredX : 0),
+									opacity: 0.6,
+								},
+								{ x: 0, opacity: 1 },
+								0,
+							);
+						}
+						return;
 					}
 					for (const { row, part } of commits) {
 						const move = !motion.matches;
@@ -175,25 +209,29 @@ export function useCommitHistoryScroll(
 					return;
 				}
 
-				const width = stage.clientWidth;
 				const offscreenX = (part: HTMLElement, side: number) =>
 					side > 0
 						? width - part.offsetLeft + 32
 						: -(part.offsetLeft + part.offsetWidth + 32);
 				const { draw, center } = createCommitGraphDraw(track, list, onMerge);
-				const slides = commits.map(({ part, node, fill }, index) => {
+				const slides = commits.map(({ row, part, node, fill }, index) => {
+					const onRight = row.matches(`.${styles.monero}, .${styles.bitcoin}`);
+					const graphX = mobile && !onRight ? centeredX * 2 : 0;
 					return {
 						part,
 						node,
 						fill,
 						pan: index === 0 ? firstPan : center(part) - screenMidpoint,
-						direction: entrySide(part),
+						direction: mobile ? (onRight ? 1 : -1) : entrySide(part),
+						graphX,
+						cardX: graphX ? -part.offsetLeft - graphX : 0,
 					};
 				});
 
 				const story = gsap.timeline({ defaults: { ease: "power2.out" } });
 				const first = slides[0];
-				story.set(track, { y: -first.pan }, 0);
+				story.set(track, { y: -first.pan, ...(mobile && { x: centeredX }) }, 0);
+				if (mobile) story.set(label, { x: centeredX }, 0);
 
 				// Draw from the label to the first node in one scroll-scrubbed beat.
 				const labelLine =
@@ -230,18 +268,28 @@ export function useCommitHistoryScroll(
 				}
 
 				for (const [index, slide] of slides.entries()) {
-					const { part, node, fill, pan, direction } = slide;
+					const { part, node, fill, pan, direction, graphX, cardX } = slide;
 					const previous = slides[index - 1];
 					const delta = previous ? pan - previous.pan : 0;
+					const graphDelta = graphX - (previous?.graphX ?? centeredX);
 					const travel = { duration: CROSSING };
+					if (mobile) {
+						// Pan the entire graph together. Cancel its x delta on the cards so
+						// they slide at the edge rather than crossing the rail or reflowing.
+						story.to([track, label], { ...travel, x: graphX }, index);
+					}
 					story.set(
 						part,
 						{
-							x: offscreenX(part, direction),
+							x: mobile
+								? cardX + graphDelta + direction * MOBILE_SLIDE
+								: offscreenX(part, direction),
 							y: -delta,
-							skewY: direction * 3,
 							opacity: 0,
-							filter: `blur(${EXIT_BLUR / 3}px)`,
+							...(!mobile && {
+								skewY: direction * 3,
+								filter: `blur(${EXIT_BLUR / 3}px)`,
+							}),
 							pointerEvents: "none",
 						},
 						0,
@@ -250,11 +298,10 @@ export function useCommitHistoryScroll(
 						part,
 						{
 							...travel,
-							x: 0,
+							x: cardX,
 							y: 0,
-							skewY: 0,
 							opacity: 1,
-							filter: "blur(0px)",
+							...(!mobile && { skewY: 0, filter: "blur(0px)" }),
 						},
 						index,
 					);
@@ -286,12 +333,18 @@ export function useCommitHistoryScroll(
 						previous.part,
 						{
 							...travel,
-							x: offscreenX(previous.part, -direction),
+							x: mobile
+								? previous.cardX -
+									graphDelta +
+									previous.direction * MOBILE_SLIDE
+								: offscreenX(previous.part, -direction),
 							y: delta,
-							skewY: -direction * 3,
-							scale: 0.92,
 							opacity: 0,
-							filter: `blur(${EXIT_BLUR}px)`,
+							...(!mobile && {
+								skewY: -direction * 3,
+								scale: 0.92,
+								filter: `blur(${EXIT_BLUR}px)`,
+							}),
 						},
 						index,
 					);

@@ -92,7 +92,7 @@
 .presentNode {
 	position: absolute;
 	top: 0;
-	left: 50%;
+	left: var(--graph-axis, 50%);
 	width: 10px;
 	height: 10px;
 	transform: translate(-50%, -50%);
@@ -102,7 +102,7 @@
 }
 
 .educationPresentNode {
-	left: calc(50% - var(--education-lane-offset));
+	left: calc(var(--graph-axis, 50%) - var(--education-lane-offset));
 	border-color: var(--education-branch);
 }
 
@@ -130,7 +130,7 @@
 .storyStage[data-pinned] .storyTrack::before,
 .trunk {
 	position: absolute;
-	left: calc(50% - 1px);
+	left: calc(var(--graph-axis, 50%) - 1px);
 	width: 2px;
 	background: #61cf5a;
 }
@@ -226,7 +226,7 @@
 .rail,
 .presentRail {
 	position: absolute;
-	inset: 0 auto 0 50%;
+	inset: 0 auto 0 var(--graph-axis, 50%);
 	width: var(--rail-width);
 	transform: translateX(-50%);
 	pointer-events: none;
@@ -493,12 +493,62 @@
 	color: #a2ab9a;
 }
 
-@media (max-width: 639px) {
-	.branchName {
+@media (width < 40rem) {
+	.experience {
+		/* Keep the existing rail geometry intact and reserve room beside it. */
+		--graph-axis: 52px;
+		--card-inset: 96px;
+	}
+	.mainLabel {
+		inset-inline: var(--graph-axis) auto;
+		margin-inline: 0;
+		translate: -50%;
+	}
+	.mainLabel::after {
+		left: calc(50% - 1px);
+	}
+	.storyStage {
+		overflow-x: clip;
+	}
+	.presentLine {
+		margin-left: calc(var(--graph-axis) - 1px);
+	}
+	.branchName,
+	.monero .branchName,
+	.bitcoin .branchName,
+	.education .branchName {
+		--label-offset: 0px;
+		max-width: 68px;
+		padding-inline: 2px;
+		text-align: center;
 		font-size: 11px;
 	}
+	/* Separate labels when two branches are drawing at the same height. */
+	.joystick .branchName,
+	.education .branchName {
+		top: -24px;
+	}
+	.mergeDate,
+	.moneroDate,
+	.bitcoin .mergeDate,
+	.kiosk .mergeDate {
+		inset-inline: var(--graph-axis) auto;
+		translate: -50%;
+		font-size: 11px;
+		background: #0b0d0b;
+		padding-inline: 3px;
+		line-height: 16px;
+		bottom: -28px;
+	}
+	.moneroDate {
+		bottom: 36px;
+	}
+	.kiosk .mergeDate {
+		left: calc(var(--graph-axis) - var(--education-lane-offset));
+	}
 	.chapter article {
-		--article-gap: 28px;
+		width: calc(100% - var(--card-inset));
+		margin-left: var(--card-inset);
 		overflow-wrap: anywhere;
 	}
 	.storyTrack {
@@ -532,9 +582,6 @@
 	}
 	.meta {
 		font-size: 11px;
-	}
-	.commits {
-		padding-left: 12px;
 	}
 	.tags {
 		gap: 8px;

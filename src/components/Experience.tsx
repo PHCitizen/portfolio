@@ -39,7 +39,7 @@ export default function Experience({
 
 	return (
 		<section
-			className="scroll-mt-10 border-t border-white/10 py-16 lg:py-20"
+			className={`${styles.experience} scroll-mt-10 border-t border-white/10 py-16 lg:py-20`}
 			id={embedded ? undefined : "experience"}
 		>
 			<SectionHeading
@@ -56,8 +56,7 @@ export default function Experience({
 					aria-pressed={sound.enabled}
 					onClick={sound.toggle}
 				>
-					sound{" "}
-					<span aria-hidden="true">{sound.enabled ? "on" : "off"}</span>
+					sound <span aria-hidden="true">{sound.enabled ? "on" : "off"}</span>
 				</button>
 			</SectionHeading>
 			<div ref={stage} className={styles.storyStage}>
