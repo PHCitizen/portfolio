@@ -4,6 +4,10 @@ import styles from "./Experience.module.css";
 export const NODE_BEAT = 0.3;
 
 // These beats are measured in graph pixels so they remain tied to the scroll.
+const FORK_NODE_REVEAL = 8;
+const branchStartDelay = (segment: Element) =>
+	segment.matches(`.${styles.joystick} .${styles.fork}`) ? FORK_NODE_REVEAL : 0;
+
 const MERGE_APPROACH = 108;
 const MERGE_COLLAPSE = 30;
 const MERGE_POP = 14;
@@ -49,7 +53,7 @@ function createBranchLabelUpdates(
 		const geometry = segments
 			.map((segment) => {
 				const bounds = segment.getBoundingClientRect();
-				const start = bounds.top - origin;
+				const start = bounds.top - origin + branchStartDelay(segment);
 				const end = bounds.bottom - origin;
 				const path = segment.querySelector("path");
 				const matrix = path?.getScreenCTM();
@@ -167,15 +171,18 @@ export function createCommitGraphDraw(
 		const path = svg.querySelector("path");
 		if (!path) continue;
 		const length = path.getTotalLength();
+		const delay = branchStartDelay(svg);
 		gsap.set(path, { strokeDasharray: `${length} ${length}` });
 		draw.fromTo(
 			path,
 			{ strokeDashoffset: length },
-			{ strokeDashoffset: 0, duration: rect(svg).height },
-			top(svg),
+			{ strokeDashoffset: 0, duration: rect(svg).height - delay },
+			top(svg) + delay,
 		);
 	}
 
+	const forkNode = list.querySelector(`.${styles.forkNode}`);
+	if (forkNode) reveal(forkNode, center(forkNode), FORK_NODE_REVEAL);
 	for (const node of list.querySelectorAll(`.${styles.node}`)) {
 		reveal(node, center(node));
 	}

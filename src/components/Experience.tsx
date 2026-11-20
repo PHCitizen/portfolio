@@ -78,6 +78,7 @@ export default function Experience({
 									<path d="M80 0 C80 28 48 20 48 48 V64" />
 								</svg>
 								<span className={styles.branchLine} />
+								<span className={styles.forkNode} aria-hidden="true" />
 								<span className={styles.node}>
 									<span className={styles.nodeFill} />
 								</span>

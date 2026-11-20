@@ -8,6 +8,7 @@ const VIEWPORTS_PER_COMMIT = 1.5;
 const STORY_SCRUB_SECONDS = 0.2;
 const EXIT_BLUR = 12;
 const CROSSING = 0.46;
+const FIRST_FORK_CLEARANCE = 32;
 
 export function useCommitHistoryScroll(
 	ref: RefObject<HTMLDivElement | null>,
@@ -85,8 +86,18 @@ export function useCommitHistoryScroll(
 				const height = stage.clientHeight;
 				// Center cards in the viewport below the navigation, accounting for the heading.
 				const screenMidpoint = (height - headingHeight) / 2;
+				const firstCommit = commits[0];
+				const firstRowTop = firstCommit.row.offsetTop;
+				const firstCardTop = firstRowTop + firstCommit.part.offsetTop;
+				const firstCardHeight = firstCommit.part.offsetHeight;
+				// Don't center the first card at the expense of hiding its fork under main.
+				const firstPan = Math.min(
+					firstCardTop + firstCardHeight / 2 - screenMidpoint,
+					firstRowTop - label.offsetHeight - FIRST_FORK_CLEARANCE,
+				);
 				if (
 					motion.matches ||
+					firstCardTop + firstCardHeight - firstPan > height ||
 					commits.some(({ part }) => part.offsetHeight > 2 * screenMidpoint)
 				) {
 					// Leave tall cards in normal flow rather than clipping their text.
@@ -170,12 +181,12 @@ export function useCommitHistoryScroll(
 						? width - part.offsetLeft + 32
 						: -(part.offsetLeft + part.offsetWidth + 32);
 				const { draw, center } = createCommitGraphDraw(track, list, onMerge);
-				const slides = commits.map(({ part, node, fill }) => {
+				const slides = commits.map(({ part, node, fill }, index) => {
 					return {
 						part,
 						node,
 						fill,
-						pan: center(part) - screenMidpoint,
+						pan: index === 0 ? firstPan : center(part) - screenMidpoint,
 						direction: entrySide(part),
 					};
 				});
