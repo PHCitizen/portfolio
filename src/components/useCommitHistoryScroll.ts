@@ -4,7 +4,8 @@ import { type RefObject, useEffect } from "react";
 import { createCommitGraphDraw, NODE_BEAT } from "./commitGraphDraw";
 import styles from "./Experience.module.css";
 
-const VIEWPORTS_PER_COMMIT = 1;
+const VIEWPORTS_PER_COMMIT = 1.5;
+const STORY_SCRUB_SECONDS = 0.2;
 const EXIT_BLUR = 12;
 const CROSSING = 0.46;
 
@@ -305,7 +306,8 @@ export function useCommitHistoryScroll(
 					start: `top top+=${headingHeight}`,
 					end: () =>
 						`+=${(stage.clientHeight + headingHeight) * slides.length * VIEWPORTS_PER_COMMIT}`,
-					scrub: true,
+					// Ease into large wheel steps without intercepting native scrolling.
+					scrub: STORY_SCRUB_SECONDS,
 				});
 				focus = (event) => {
 					if (!(event.target instanceof HTMLElement)) return;
@@ -323,6 +325,7 @@ export function useCommitHistoryScroll(
 						behavior: "instant",
 					});
 					ScrollTrigger.update();
+					trigger.getTween()?.progress(1);
 				};
 			}, stage);
 			ScrollTrigger.refresh();
