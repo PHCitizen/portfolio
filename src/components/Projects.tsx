@@ -145,7 +145,7 @@ export default function Projects() {
 				target="_blank"
 				rel="noreferrer"
 			>
-				More experiments on GitHub <span>↗</span>
+				More experiments on GitHub
 			</a>
 		</section>
 	);

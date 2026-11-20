@@ -34,7 +34,7 @@ export default function Contact({ embedded = false }: { embedded?: boolean }) {
 					href="mailto:embogjayvee@gmail.com"
 					className="inline-flex items-center gap-2 bg-[#61cf5a] px-3 py-3.5 font-mono text-xs font-bold text-[#0b0d0b] transition-colors hover:bg-[#8be784] sm:gap-8 sm:px-5 sm:text-base"
 				>
-					embogjayvee@gmail.com <span>↗</span>
+					embogjayvee@gmail.com
 				</a>
 				<button
 					className="cursor-pointer border border-[#3b4b33] px-4 py-3.5 font-mono text-sm text-[#a9b49f] transition-colors hover:border-[#61cf5a] hover:text-[#61cf5a]"
@@ -51,13 +51,11 @@ export default function Contact({ embedded = false }: { embedded?: boolean }) {
 			>
 				{copyError
 					? "Please copy manually: embogjayvee@gmail.com"
-					: copied
-						? "Email copied to clipboard."
-						: ""}
+					: ""}
 			</output>
 			<div className="relative z-10 mt-7 flex flex-wrap gap-4 font-mono text-sm text-[#7e877b] [&_a:hover]:text-[#61cf5a] [&>span:not(:last-child)]:text-[#3b4b33]">
 				<a href="https://github.com/PHCitizen" target="_blank" rel="noreferrer">
-					GitHub ↗
+					GitHub
 				</a>
 				<span>/</span>
 				<span>Angono, Rizal, PH</span>

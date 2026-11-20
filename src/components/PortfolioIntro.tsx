@@ -18,13 +18,6 @@ export default function PortfolioIntro() {
 				<div className={styles.actions}>
 					<a className={styles.primary} href="#projects">
 						Explore my work
-						<svg aria-hidden="true" viewBox="0 0 16 16" fill="none">
-							<path
-								d="M8 2.5v10m-4-4 4 4 4-4"
-								stroke="currentColor"
-								strokeWidth="1.5"
-							/>
-						</svg>
 					</a>
 					<a className={styles.secondary} href="#contact">
 						Get in touch

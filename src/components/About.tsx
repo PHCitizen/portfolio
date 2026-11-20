@@ -3,7 +3,7 @@ import SectionHeading from "./SectionHeading";
 const profile = [
 	["name", "Jayvee B. Embog"],
 	["focus", "Backend Engineering"],
-	["location", "Philippines 🇵🇭"],
+	["location", "Philippines &#x1F1F5;&#x1F1ED;"],
 	["education", "BS Computer Engineering"],
 	["currently", "4th-year @ URS"],
 	["looking_for", "240-hour OJT"],
@@ -90,7 +90,7 @@ export default function About({ embedded = false }: { embedded?: boolean }) {
 			<div className="mt-12 grid grid-cols-2 border-y border-[#3b4b33]/60 bg-[#61cf5a]/[0.015] py-7 sm:grid-cols-4">
 				{[
 					["02", "+", "YEARS OF EXPERIENCE"],
-					["01", "↗", "MONERO BOUNTY WON"],
+					["01", "", "BOUNTY WON"],
 					["06", "", "CORE LANGUAGES"],
 					["∞", "", "CURIOSITY TO BUILD"],
 				].map(([value, suffix, label]) => (

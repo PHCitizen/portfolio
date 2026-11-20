@@ -47,7 +47,7 @@ export default function Header() {
 				className="hidden items-center gap-4 border border-[#3b4b33] px-4 py-2.5 font-mono text-sm transition-colors hover:border-[#61cf5a] hover:text-[#61cf5a] xl:flex"
 				href="mailto:embogjayvee@gmail.com"
 			>
-				Let’s talk <span className="text-[#61cf5a]">↗</span>
+				Let’s talk 
 			</a>
 		</header>
 	);

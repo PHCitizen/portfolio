@@ -220,7 +220,7 @@ export default function DesktopStory() {
 						{reading ? "Desktop view" : "Reading view"}
 					</button>
 					<a href="mailto:embogjayvee@gmail.com" className="menu-contact">
-						Let’s talk ↗
+						Let’s talk
 					</a>
 				</header>
 				<div className="wallpaper" aria-hidden="true">
