@@ -32,12 +32,14 @@
 }
 
 .continuation {
+	--present-line-height: 72px;
+	position: relative;
 	padding-bottom: 8px;
 }
 
 .presentLine {
 	display: block;
-	height: 72px;
+	height: var(--present-line-height);
 	width: 0;
 	margin: 0 auto;
 	border-left: 2px dashed #50864c;
@@ -58,6 +60,11 @@
 	border: 2px solid #61cf5a;
 	border-radius: 50%;
 	background: #0b0d0b;
+}
+
+.educationPresentNode {
+	left: calc(50% + var(--right-lane-offset));
+	border-color: var(--education-branch);
 }
 
 .present p {
@@ -96,6 +103,10 @@
 }
 
 .storyTrack {
+	--rail-width: 160px;
+	--right-lane: 70%;
+	--right-lane-offset: calc(var(--rail-width) * 0.2);
+	--education-branch: #a9bb95;
 	position: relative;
 }
 
@@ -136,7 +147,8 @@
 .chapter article {
 	width: calc(50% - 72px);
 }
-.monero article {
+.monero article,
+.education article {
 	margin-left: calc(50% + 72px);
 }
 
@@ -146,22 +158,35 @@
 }
 .monero {
 	--branch: #d6af79;
-	--lane: 112px;
+	--lane: var(--right-lane);
 	padding-bottom: 144px;
+}
+.education {
+	--branch: var(--education-branch);
+	--lane: var(--right-lane);
+	padding-bottom: 96px;
 }
 .bitcoin {
 	--branch: #61cf5a;
 	--lane: 48px;
-	margin-top: 48px;
+	/* Separate this fork from the December 2023 merge without breaking either rail. */
+	--fork-gap: 80px;
+	padding-top: calc(32px + var(--fork-gap));
 	padding-bottom: 96px;
 }
 
-.rail {
+.rail,
+.presentRail {
 	position: absolute;
 	inset: 0 auto 0 50%;
-	width: 160px;
+	width: var(--rail-width);
 	transform: translateX(-50%);
 	pointer-events: none;
+}
+
+.presentRail {
+	bottom: auto;
+	height: var(--present-line-height);
 }
 
 .rail svg {
@@ -200,14 +225,26 @@
 .monero .branchLine {
 	bottom: 128px;
 }
+.bitcoin .fork {
+	top: var(--fork-gap);
+}
 .bitcoin .branchLine {
+	top: calc(64px + var(--fork-gap));
 	bottom: 64px;
+}
+.branchLine.educationContinues {
+	--branch: var(--education-branch);
+	--lane: var(--right-lane);
+	top: 0;
+	bottom: 0;
 }
 .joystickContinues {
 	left: 47px;
 	top: 0;
-	bottom: 64px;
 	background: #a9bb95;
+}
+.education .joystickContinues {
+	bottom: 64px;
 }
 
 .node,
@@ -222,6 +259,10 @@
 	border-radius: 50%;
 	background: #0b0d0b;
 	transform: translate(-50%, -50%);
+}
+
+.bitcoin .node {
+	top: calc(48px + var(--fork-gap));
 }
 
 .mergeNode,
@@ -251,6 +292,11 @@
 
 .moneroDate {
 	bottom: 52px;
+}
+.education .mergeDate,
+.bitcoin .mergeDate {
+	right: calc(50% + 16px);
+	left: auto;
 }
 
 .meta {
@@ -325,11 +371,12 @@
 		width: calc(50% - 28px);
 		overflow-wrap: anywhere;
 	}
-	.monero article {
+	.monero article,
+	.education article {
 		margin-left: calc(50% + 28px);
 	}
-	.rail {
-		width: 80px;
+	.storyTrack {
+		--rail-width: 80px;
 	}
 	.rail svg {
 		transform: scaleX(0.5);
@@ -338,9 +385,6 @@
 	.joystick,
 	.bitcoin {
 		--lane: 24px;
-	}
-	.monero {
-		--lane: 56px;
 	}
 	.joystickContinues {
 		left: 23px;

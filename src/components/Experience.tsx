@@ -31,7 +31,7 @@ export default function Experience({
 				className={styles.graphHeading}
 				number="02"
 				title="The commit history"
-				note="EXPERIENCE THAT SHIPS"
+				note="WORK & EDUCATION"
 			>
 				<div className={styles.mainLabel}>main</div>
 			</SectionHeading>
@@ -39,7 +39,7 @@ export default function Experience({
 				<div className={styles.storyTrack}>
 					<ol
 						className={styles.timeline}
-						aria-label="Experience timeline, oldest to newest"
+						aria-label="Work and education timeline, ordered by start date"
 					>
 						<li className={styles.trunk} aria-hidden="true" />
 						<li className={`${styles.chapter} ${styles.joystick}`}>
@@ -112,15 +112,6 @@ export default function Experience({
 									<path d="M112 0 V16 C112 44 80 36 80 64" />
 								</svg>
 								<span className={styles.mergeNode} />
-								<svg
-									aria-hidden="true"
-									className={styles.joystickJoin}
-									viewBox="0 0 160 64"
-									fill="none"
-								>
-									<path d="M48 0 V16 C48 44 80 36 80 64" />
-								</svg>
-								<span className={styles.joystickMergeNode} />
 							</div>
 							<article>
 								<div className={styles.meta}>
@@ -161,6 +152,45 @@ export default function Experience({
 							>
 								2023
 							</time>
+						</li>
+						<li className={`${styles.chapter} ${styles.education}`}>
+							<div className={styles.rail} aria-hidden="true">
+								<span className={styles.joystickContinues} />
+								<svg
+									aria-hidden="true"
+									className={styles.joystickJoin}
+									viewBox="0 0 160 64"
+									fill="none"
+								>
+									<path d="M48 0 V16 C48 44 80 36 80 64" />
+								</svg>
+								<span className={styles.joystickMergeNode} />
+								<svg
+									aria-hidden="true"
+									className={styles.fork}
+									viewBox="0 0 160 64"
+									fill="none"
+								>
+									<path d="M80 0 C80 28 112 20 112 48 V64" />
+								</svg>
+								<span className={styles.branchLine} />
+								<span className={styles.node}>
+									<span className={styles.nodeFill} />
+								</span>
+							</div>
+							<article>
+								<div className={styles.meta}>
+									<span>MID-2023 — PRESENT</span>
+									<span className={styles.branchName}>education</span>
+								</div>
+								<h3>Bachelor of Science in Computer Engineering</h3>
+								<p className={styles.role}>
+									University of Rizal System <span>· Antipolo Campus</span>
+								</p>
+								<p className={styles.description}>
+									Expected graduation: mid-2027
+								</p>
+							</article>
 							<time
 								className={styles.mergeDate}
 								dateTime="2023-12"
@@ -171,6 +201,9 @@ export default function Experience({
 						</li>
 						<li className={`${styles.chapter} ${styles.bitcoin}`}>
 							<div className={styles.rail} aria-hidden="true">
+								<span
+									className={`${styles.branchLine} ${styles.educationContinues}`}
+								/>
 								<svg
 									aria-hidden="true"
 									className={styles.fork}
@@ -195,7 +228,7 @@ export default function Experience({
 							</div>
 							<article>
 								<div className={styles.meta}>
-									<span>SEP 2024 — SEP 2026</span>
+									<span>2025 — SEP 2026</span>
 									<span className={styles.branchName}>bitcoin.com</span>
 								</div>
 								<h3>bitcoin.com</h3>
@@ -235,8 +268,17 @@ export default function Experience({
 					</ol>
 					<div className={styles.continuation}>
 						<span className={styles.presentLine} aria-hidden="true" />
+						<div className={styles.presentRail} aria-hidden="true">
+							<span
+								className={`${styles.branchLine} ${styles.educationContinues}`}
+							/>
+						</div>
 						<div className={styles.present}>
 							<span className={styles.presentNode} aria-hidden="true" />
+							<span
+								className={`${styles.presentNode} ${styles.educationPresentNode}`}
+								aria-hidden="true"
+							/>
 							<p>
 								Latest <span>·</span>{" "}
 								<time dateTime={currentDate}>{formattedDate}</time>
