@@ -26,7 +26,7 @@ export default function Contact({ embedded = false }: { embedded?: boolean }) {
 				Have a problem worth
 				<br />
 				<span className="text-[#61cf5a]">solving together?</span>
-				<span className="text-[#61cf5a] motion-safe:animate-pulse">_</span>
+				<span className="text-[#61cf5a]">_</span>
 			</h2>
 			<p className="relative z-10 mt-6 text-xs leading-7 text-[#92998e]">
 				I’m looking for a backend OJT placement and meaningful opportunities.

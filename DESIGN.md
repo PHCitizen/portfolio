@@ -71,6 +71,12 @@ components:
 
 # Design System: Jayvee Embog
 
+## Homepage: Signal and Flow
+
+The `/` route uses standard document scrolling, with a shared header and footer and directly linked About, Experience, Projects, Skills, and Contact sections. `src/components/PortfolioIntro.tsx` pairs a large Space Grotesk name with a custom inline SVG circuit. Intro typography steps from a 3.5–7.25rem name to a 1.2–1.5rem role, 1rem body, and 0.875rem controls. The artwork adds deep greens `#152312` and `#111c10`; the intro description uses `#a3ab9f`.
+
+The sole choreographed moment is an 800ms CSS stroke draw on one green trace. Text and links are immediately available, and with reduced motion the completed trace is static. The illustration stacks below the intro copy on small screens. There is no simulated desktop, pinned scroll, or scripted pointer on the active route.
+
 ## Overview
 
 **Creative North Star: "The Engineer's Terminal"**
