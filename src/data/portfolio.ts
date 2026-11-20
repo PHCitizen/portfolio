@@ -14,19 +14,6 @@ export const projects = [
 	},
 	{
 		id: "02",
-		name: "Automated Class Scheduler",
-		category: "SYSTEMS / THESIS PROJECT",
-		description:
-			"Complex constraints. Conflict-free schedules. An intelligent scheduling system for the University of Rizal System.",
-		tags: ["Python", "React", "Prisma"],
-		href: null,
-		linkLabel: null,
-		visual: "schedule",
-		badge: "TEAM LEAD · 6 DEVELOPERS",
-		detail: "Heuristic search · Institutional pilot",
-	},
-	{
-		id: "03",
 		name: "bomberman-py",
 		category: "NETWORKING / GAME DEVELOPMENT",
 		description:
@@ -37,6 +24,19 @@ export const projects = [
 		visual: "game",
 		badge: "REAL-TIME MULTIPLAYER",
 		detail: "Host discovery · State synchronization",
+	},
+	{
+		id: "03",
+		name: "Automated Class Scheduler",
+		category: "SYSTEMS / THESIS PROJECT",
+		description:
+			"Complex constraints. Conflict-free schedules. An intelligent scheduling system for the University of Rizal System.",
+		tags: ["Python", "React", "Prisma"],
+		href: null,
+		linkLabel: null,
+		visual: "schedule",
+		badge: "TEAM LEAD · 6 DEVELOPERS",
+		detail: "Heuristic search · Institutional pilot",
 	},
 	{
 		id: "04",
