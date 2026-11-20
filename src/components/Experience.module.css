@@ -1,5 +1,6 @@
 .direction,
 .mainLabel,
+.branchName,
 .continuation {
 	font-family: "Space Mono", monospace;
 	font-size: 12px;
@@ -141,8 +142,9 @@
 }
 
 .chapter {
+	--node-top: 48px;
 	position: relative;
-	padding-top: 32px;
+	padding-top: calc(var(--node-top) + 12px);
 	padding-bottom: 64px;
 }
 
@@ -179,7 +181,7 @@
 	--lane: var(--right-lane);
 	/* Separate this fork from the December 2023 merge without breaking either rail. */
 	--fork-gap: 80px;
-	padding-top: calc(32px + var(--fork-gap));
+	--node-top: calc(48px + var(--fork-gap));
 	padding-bottom: 96px;
 }
 
@@ -265,7 +267,7 @@
 .mergeNode,
 .joystickMergeNode {
 	position: absolute;
-	top: 48px;
+	top: var(--node-top);
 	left: var(--lane);
 	width: 10px;
 	height: 10px;
@@ -273,10 +275,6 @@
 	border-radius: 50%;
 	background: #0b0d0b;
 	transform: translate(-50%, -50%);
-}
-
-.bitcoin .node {
-	top: calc(48px + var(--fork-gap));
 }
 
 .mergeNode,
@@ -317,15 +315,27 @@
 }
 
 .meta {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 8px 20px;
 	font-family: "Space Mono", monospace;
 	font-size: 12px;
 	color: #bac3b4;
 }
+.branchLabel {
+	position: absolute;
+	inset: var(--node-top) auto auto var(--lane);
+}
 .branchName {
+	display: block;
+	width: max-content;
+	line-height: 1.5;
+	padding-inline: 4px;
+	translate: calc(-100% - 6px) -50%;
 	color: var(--branch);
+	background: #0b0d0b;
+}
+.monero .branchName,
+.bitcoin .branchName,
+.education .branchName {
+	translate: 6px -50%;
 }
 
 .chapter h3 {
@@ -384,6 +394,9 @@
 }
 
 @media (max-width: 639px) {
+	.branchName {
+		font-size: 11px;
+	}
 	.chapter article {
 		--article-gap: 28px;
 		overflow-wrap: anywhere;

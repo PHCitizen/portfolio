@@ -43,7 +43,7 @@ export default function Experience({
 					>
 						<li className={styles.trunk} aria-hidden="true" />
 						<li className={`${styles.chapter} ${styles.joystick}`}>
-							<div className={styles.rail} aria-hidden="true">
+							<div className={styles.rail}>
 								<svg
 									aria-hidden="true"
 									className={styles.fork}
@@ -56,12 +56,12 @@ export default function Experience({
 								<span className={styles.node}>
 									<span className={styles.nodeFill} />
 								</span>
+								<span className={styles.branchLabel}>
+									<span className={styles.branchName}>joystick-club</span>
+								</span>
 							</div>
 							<article>
-								<div className={styles.meta}>
-									<span>EARLY 2021 — DEC 2023</span>
-									<span className={styles.branchName}>joystick-club</span>
-								</div>
+								<div className={styles.meta}>EARLY 2021 — DEC 2023</div>
 								<h3>Joystick Club</h3>
 								<p className={styles.role}>
 									Full-stack Developer <span>· Freelance · Remote</span>
@@ -89,7 +89,7 @@ export default function Experience({
 							</article>
 						</li>
 						<li className={`${styles.chapter} ${styles.monero}`}>
-							<div className={styles.rail} aria-hidden="true">
+							<div className={styles.rail}>
 								<span className={styles.joystickContinues} />
 								<svg
 									aria-hidden="true"
@@ -112,12 +112,12 @@ export default function Experience({
 									<path d="M112 0 V16 C112 44 80 36 80 64" />
 								</svg>
 								<span className={styles.mergeNode} />
+								<span className={styles.branchLabel}>
+									<span className={styles.branchName}>monero-bounty</span>
+								</span>
 							</div>
 							<article>
-								<div className={styles.meta}>
-									<span>2023</span>
-									<span className={styles.branchName}>monero-bounty</span>
-								</div>
+								<div className={styles.meta}>2023</div>
 								<h3>
 									<a href="https://github.com/PHCitizen/bch-xmr-swap">
 										bch-xmr-swap
@@ -154,7 +154,7 @@ export default function Experience({
 							</time>
 						</li>
 						<li className={`${styles.chapter} ${styles.education}`}>
-							<div className={styles.rail} aria-hidden="true">
+							<div className={styles.rail}>
 								<span className={styles.joystickContinues} />
 								<svg
 									aria-hidden="true"
@@ -177,12 +177,12 @@ export default function Experience({
 								<span className={styles.node}>
 									<span className={styles.nodeFill} />
 								</span>
+								<span className={styles.branchLabel}>
+									<span className={styles.branchName}>urs</span>
+								</span>
 							</div>
 							<article>
-								<div className={styles.meta}>
-									<span>MID-2023 — PRESENT</span>
-									<span className={styles.branchName}>urs</span>
-								</div>
+								<div className={styles.meta}>MID-2023 — PRESENT</div>
 								<h3>Bachelor of Science in Computer Engineering</h3>
 								<p className={styles.role}>
 									University of Rizal System <span>· Antipolo Campus</span>
@@ -200,7 +200,7 @@ export default function Experience({
 							</time>
 						</li>
 						<li className={`${styles.chapter} ${styles.kiosk}`}>
-							<div className={styles.rail} aria-hidden="true">
+							<div className={styles.rail}>
 								<span
 									className={`${styles.branchLine} ${styles.educationContinues}`}
 								/>
@@ -225,11 +225,13 @@ export default function Experience({
 									<path d="M40 0 V16 C40 44 64 36 64 64" />
 								</svg>
 								<span className={styles.mergeNode} />
+								<span className={styles.branchLabel}>
+									<span className={styles.branchName}>red-ribbon-kiosk</span>
+								</span>
 							</div>
 							<article>
 								<div className={styles.meta}>
 									<time dateTime="2024-03">MAR 2024</time>
-									<span className={styles.branchName}>red-ribbon-kiosk</span>
 								</div>
 								<h3>Red Ribbon Kiosk Clone</h3>
 								<p className={styles.description}>
@@ -250,7 +252,7 @@ export default function Experience({
 							</time>
 						</li>
 						<li className={`${styles.chapter} ${styles.bitcoin}`}>
-							<div className={styles.rail} aria-hidden="true">
+							<div className={styles.rail}>
 								<span
 									className={`${styles.branchLine} ${styles.educationContinues}`}
 								/>
@@ -275,12 +277,12 @@ export default function Experience({
 									<path d="M112 0 V16 C112 44 80 36 80 64" />
 								</svg>
 								<span className={styles.mergeNode} />
+								<span className={styles.branchLabel}>
+									<span className={styles.branchName}>bitcoin.com</span>
+								</span>
 							</div>
 							<article>
-								<div className={styles.meta}>
-									<span>2025 — SEP 2026</span>
-									<span className={styles.branchName}>bitcoin.com</span>
-								</div>
+								<div className={styles.meta}>2025 — SEP 2026</div>
 								<h3>bitcoin.com</h3>
 								<p className={styles.role}>
 									Software Engineer <span>· Part-time · Remote</span>
