@@ -6,6 +6,8 @@ import PortfolioIntro from "../components/PortfolioIntro";
 import Projects from "../components/Projects";
 import Skills from "../components/Skills";
 
+const ENABLE_PORTFOLIO_BOOT = false;
+
 export const Route = createFileRoute("/")({ component: Portfolio });
 
 function Portfolio() {
@@ -17,7 +19,7 @@ function Portfolio() {
 		>
 			<PortfolioIntro />
 			<About />
-			<Experience showBootPrompt />
+			<Experience showBootPrompt={ENABLE_PORTFOLIO_BOOT} />
 			<Projects />
 			<Skills />
 			<Contact />

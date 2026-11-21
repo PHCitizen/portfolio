@@ -17,6 +17,17 @@
 	opacity: 1;
 }
 
+/* Let deep links and non-scripted visits reach the page without the prompt. */
+:global(:root:has(:target)) .dialog:not([data-ready]) {
+	display: none;
+}
+
+@media (scripting: none) {
+	.dialog[open] {
+		display: none;
+	}
+}
+
 .layout {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
@@ -80,10 +91,8 @@
 	position: relative;
 	height: calc(var(--log-visible) * var(--log-row));
 	margin-top: 0.875rem;
-	overflow: auto;
-	overscroll-behavior: contain;
-	scrollbar-color: #62775b #0b0d0b;
-	scrollbar-width: thin;
+	/* The log auto-follows without capturing the visitor's scroll gesture. */
+	overflow: hidden;
 }
 
 .logWindow:focus {
@@ -114,6 +123,10 @@
 	font-size: 0.8125rem;
 	cursor: pointer;
 	touch-action: manipulation;
+}
+
+.dialog:not([data-ready]) .continue {
+	visibility: hidden;
 }
 
 .continue svg {
@@ -147,13 +160,17 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-	.dialog[open] .logWindow:not([data-review]) .log li,
-	.dialog[open]:has(.logWindow:not([data-review])) .continue {
+	.dialog:not([data-ready]) .log {
+		visibility: hidden;
+	}
+
+	.dialog[open][data-ready] .log li,
+	.dialog[open][data-ready] .continue {
 		animation: arrive 1ms linear both;
 	}
 
 	@supports (transition-behavior: allow-discrete) {
-		.dialog {
+		.dialog[data-ready] {
 			transition:
 				opacity 160ms ease-out,
 				display 160ms allow-discrete;

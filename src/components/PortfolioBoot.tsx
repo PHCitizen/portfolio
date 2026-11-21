@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useLayoutEffect, useRef } from "react";
 import { BOOT_LOG, BOOT_READY_URL } from "../data/portfolioBootLog";
 import styles from "./PortfolioBoot.module.css";
 
@@ -6,6 +6,15 @@ const LOG_LINES = BOOT_LOG.split("\n");
 const LOG_START_MS = 100;
 const LOG_READY_MS = 1000;
 const LOG_INTERVAL_MS = (LOG_READY_MS - LOG_START_MS) / (LOG_LINES.length - 1);
+const SCROLL_KEYS = new Set([
+	"ArrowUp",
+	"ArrowDown",
+	"PageUp",
+	"PageDown",
+	"Home",
+	"End",
+	" ",
+]);
 const LOG_TOKEN =
 	/(\[[a-z]+\]|\bWARN\b|\bERR\b|\bECONNREFUSED\b|\b(?:ok|ready|healthy|done|complete)\b|\b[a-z]+:\/\/[^\s)]+|\bv\d+(?:\.\d+)+\b)/g;
 
@@ -46,34 +55,20 @@ export default function PortfolioBoot({ onEnable }: { onEnable: () => void }) {
 		dismiss();
 	};
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const dialog = dialogRef.current;
-		if (!dialog?.show || window.location.hash || window.scrollY > 0) return;
-		// Nonmodal so a wheel or swipe can scroll the document on the same gesture.
-		dialog.show();
+		if (!dialog?.open) return;
+		if (window.location.hash || window.scrollY > 0) {
+			dialog.close();
+			return;
+		}
+		// Use a nonmodal dialog so a wheel or swipe can still scroll the page.
+		// Start the log and its auto-follow together after hydration.
+		dialog.dataset.ready = "true";
 		const log = logRef.current;
 		let frame = 0;
-		const stopFollowing = () => {
-			cancelAnimationFrame(frame);
-			if (log) log.dataset.review = "true";
-		};
-		const onLogKey = (event: KeyboardEvent) => {
-			if (
-				[
-					"ArrowUp",
-					"ArrowDown",
-					"PageUp",
-					"PageDown",
-					"Home",
-					"End",
-					" ",
-				].includes(event.key)
-			) {
-				stopFollowing();
-			}
-		};
 		if (log) {
-			delete log.dataset.review;
+			log.focus({ preventScroll: true });
 			log.scrollTop = 0;
 			const rows = log.querySelectorAll("li");
 			if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -96,10 +91,15 @@ export default function PortfolioBoot({ onEnable }: { onEnable: () => void }) {
 				};
 				frame = requestAnimationFrame(follow);
 			}
-			log.addEventListener("wheel", stopFollowing, { passive: true });
-			log.addEventListener("pointerdown", stopFollowing, { passive: true });
-			log.addEventListener("keydown", onLogKey);
 		}
+		// Watch scroll intent too: the gesture may start over the boot log, or
+		// in a direction where the page cannot scroll yet.
+		const onWheel = (event: WheelEvent) => {
+			if (!event.ctrlKey && (event.deltaX || event.deltaY)) dismiss();
+		};
+		const onTouchMove = (event: TouchEvent) => {
+			if (event.touches.length === 1) dismiss();
+		};
 		const onFocusIn = (event: FocusEvent) => {
 			if (event.target instanceof Node && !dialog.contains(event.target)) {
 				dialog.close();
@@ -107,33 +107,45 @@ export default function PortfolioBoot({ onEnable }: { onEnable: () => void }) {
 		};
 		const stopListening = () => {
 			cancelAnimationFrame(frame);
-			log?.removeEventListener("wheel", stopFollowing);
-			log?.removeEventListener("pointerdown", stopFollowing);
-			log?.removeEventListener("keydown", onLogKey);
+			dialog.removeEventListener("wheel", onWheel);
+			dialog.removeEventListener("touchmove", onTouchMove);
 			window.removeEventListener("scroll", dismiss);
 			document.removeEventListener("focusin", onFocusIn);
 		};
-		const onClose = () => {
-			// A close queued by Strict Mode's cleanup can arrive after reopening.
-			if (!dialog.open) stopListening();
-		};
+		dialog.addEventListener("wheel", onWheel, { passive: true });
+		dialog.addEventListener("touchmove", onTouchMove, { passive: true });
 		window.addEventListener("scroll", dismiss, { passive: true });
 		document.addEventListener("focusin", onFocusIn);
-		dialog.addEventListener("close", onClose);
+		dialog.addEventListener("close", stopListening);
 		return () => {
 			stopListening();
-			dialog.removeEventListener("close", onClose);
-			if (dialog.open) dialog.close();
+			dialog.removeEventListener("close", stopListening);
 		};
 	}, [dismiss]);
 
 	return (
 		<dialog
+			open
 			ref={dialogRef}
 			className={styles.dialog}
 			aria-label="Portfolio loading screen"
+			onClick={(event) => {
+				// Leave Continue and the ready link to their own activation handlers.
+				if (
+					event.target instanceof Element &&
+					!event.target.closest("a, button")
+				) {
+					dismiss();
+				}
+			}}
 			onKeyDown={(event) => {
-				if (event.key === "Escape") dismiss();
+				if (
+					event.key === "Escape" ||
+					(SCROLL_KEYS.has(event.key) &&
+						!(event.key === " " && event.target instanceof HTMLButtonElement))
+				) {
+					dismiss();
+				}
 			}}
 		>
 			<div className={styles.layout}>
@@ -149,7 +161,7 @@ export default function PortfolioBoot({ onEnable }: { onEnable: () => void }) {
 							ref={logRef}
 							className={styles.logWindow}
 							aria-label="Simulated boot log"
-							// biome-ignore lint/a11y/noNoninteractiveTabindex: Keyboard users need to scroll the transcript.
+							// biome-ignore lint/a11y/noNoninteractiveTabindex: Focus the transcript so keyboard users can dismiss the screen.
 							tabIndex={0}
 						>
 							<ul className={styles.log}>
