@@ -1,113 +1,153 @@
 .split {
-  display: grid;
-  border: 1px solid #3b4b33;
-  background: #0f120e;
+	display: grid;
+	border: 1px solid #3b4b33;
+	background: #0f120e;
 }
 
-.profile, .renderPane { min-width: 0; }
-.profileBody { padding: 20px; }
+.profile,
+.renderPane {
+	min-width: 0;
+}
+.profileBody {
+	padding: 20px;
+}
 
 .paneHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  min-height: 44px;
-  padding: 12px 20px;
-  border-bottom: 1px solid #3b4b33;
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  color: #92998e;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	min-height: 44px;
+	padding: 12px 20px;
+	border-bottom: 1px solid #3b4b33;
+	font-family: "Space Mono", monospace;
+	font-size: 10px;
+	color: #92998e;
 }
 
 .renderPane {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid #3b4b33;
-  background: radial-gradient(ellipse at center, #142012 0%, #0b0d0b 70%);
+	display: flex;
+	flex-direction: column;
+	border-top: 1px solid #3b4b33;
+	background: radial-gradient(ellipse at center, #142012 0%, #0b0d0b 70%);
 }
 
 .renderViewport {
-  position: relative;
-  display: flex;
-  flex: 1;
-  min-height: 365px;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  contain: layout paint;
+	position: relative;
+	display: flex;
+	flex: 1;
+	min-height: 365px;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	contain: layout paint;
 }
 
 .ascii {
-  user-select: none;
-  flex-shrink: 0;
-  font-family: 'Space Mono', monospace;
-  font-size: clamp(5px, 1.45vw, 8px);
-  line-height: 1.15;
-  letter-spacing: 0.5px;
-  color: #61cf5a;
+	user-select: none;
+	flex-shrink: 0;
+	font-family: "Space Mono", monospace;
+	font-size: clamp(5px, 1.45vw, 8px);
+	line-height: 1.15;
+	letter-spacing: 0.5px;
+	color: #61cf5a;
 }
 
 .renderControl {
-  position: absolute;
-  bottom: 12px;
-  right: 16px;
-  padding: 8px 0;
-  font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  color: #92998e;
+	position: absolute;
+	bottom: 12px;
+	right: 16px;
+	padding: 8px 0;
+	font-family: "Space Mono", monospace;
+	font-size: 10px;
+	color: #92998e;
 }
 
-.renderControl:hover { color: #61cf5a; }
+.renderControl:hover {
+	color: #61cf5a;
+}
 
 @media (min-width: 1024px) {
-  .split { grid-template-columns: 1.1fr 1fr; }
-  .profileBody { padding: 24px; }
-  .renderPane { border-top: 0; border-left: 1px solid #3b4b33; }
-  .ascii { font-size: clamp(5px, 0.65vw, 8px); }
+	.split {
+		grid-template-columns: 1.1fr 1fr;
+	}
+	.profileBody {
+		padding: 24px;
+	}
+	.renderPane {
+		border-top: 0;
+		border-left: 1px solid #3b4b33;
+	}
+	.ascii {
+		font-size: clamp(5px, 0.65vw, 8px);
+	}
 }
 
 /* Reserve the final layout while the command runs. Keep the idle/SSR
    state readable if hydration fails. */
-.hero[data-phase='typing'] .content,
-.hero[data-phase='loading'] .content {
-  visibility: hidden;
+.hero[data-phase="typing"] .content,
+.hero[data-phase="loading"] .content {
+	visibility: hidden;
 }
 
-.hero[data-phase='ready'] .content {
-  animation: reveal 500ms cubic-bezier(0.23, 1, 0.32, 1) both;
+.hero[data-phase="ready"] .content {
+	animation: reveal 500ms cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 
 .cursor {
-  animation: blink 700ms steps(1, end) infinite;
+	animation: blink 700ms steps(1, end) infinite;
 }
 
 .loader i {
-  width: 4px;
-  height: 12px;
-  background: #61cf5a;
-  animation: load 600ms ease-in-out infinite alternate;
+	width: 4px;
+	height: 12px;
+	background: #61cf5a;
+	animation: load 600ms ease-in-out infinite alternate;
 }
 
-.loader i:nth-child(2) { animation-delay: 100ms; }
-.loader i:nth-child(3) { animation-delay: 200ms; }
+.loader i:nth-child(2) {
+	animation-delay: 100ms;
+}
+.loader i:nth-child(3) {
+	animation-delay: 200ms;
+}
 
 @keyframes reveal {
-  from { opacity: 0; }
-  to { opacity: 1; }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 @keyframes blink {
-  50% { opacity: 0; }
+	50% {
+		opacity: 0;
+	}
 }
 
 @keyframes load {
-  from { opacity: 0.3; transform: scaleY(0.4); }
-  to { opacity: 1; transform: scaleY(1); }
+	from {
+		opacity: 0.3;
+		transform: scaleY(0.4);
+	}
+	to {
+		opacity: 1;
+		transform: scaleY(1);
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero[data-phase] .content { visibility: visible; animation: none; }
-  .cursor, .loader i { animation: none; }
-  .renderControl { display: none; }
+	.hero[data-phase] .content {
+		visibility: visible;
+		animation: none;
+	}
+	.cursor,
+	.loader i {
+		animation: none;
+	}
+	.renderControl {
+		display: none;
+	}
 }

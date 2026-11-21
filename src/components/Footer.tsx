@@ -4,9 +4,7 @@ export default function Footer() {
 			<a className="text-base font-bold text-[#e8ece5]" href="/#">
 				jayvee<span className="text-[#61cf5a]">.dev_</span>
 			</a>
-			<span>
-				© {new Date().getFullYear()} Jayvee Embog{" "}
-			</span>
+			<span>© {new Date().getFullYear()} Jayvee Embog </span>
 		</footer>
 	);
 }
