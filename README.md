@@ -41,6 +41,15 @@ pnpm format
 pnpm check
 ```
 
+### Pre-commit formatting
+
+After `pnpm install`, enable the versioned Git hook from the repository root:
+
+```bash
+git config --local core.hooksPath .githooks
+```
+
+On commit, the hook runs `pnpm biome format --write` on staged files that Biome supports and stages the formatting changes. Unstaged edits are kept out of the commit. If they cannot be restored cleanly after formatting, the hook stops the commit and restores the original changes.
 
 ## Deploy to Cloudflare Pages (legacy)
 

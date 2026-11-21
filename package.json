@@ -17,6 +17,9 @@
     "lint": "biome lint",
     "check": "biome check"
   },
+  "lint-staged": {
+    "*": "pnpm biome format --write --no-errors-on-unmatched --files-ignore-unknown=true --"
+  },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "0.10.14",
@@ -37,6 +40,7 @@
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.1",
+    "lint-staged": "^16.4.0",
     "typescript": "^6.0.2",
     "vite": "^8.0.0",
     "wrangler": "4.165.0"
