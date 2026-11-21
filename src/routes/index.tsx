@@ -13,11 +13,11 @@ function Portfolio() {
 		<main
 			id="main-content"
 			tabIndex={-1}
-			className="mx-auto max-w-[1440px] px-6 lg:px-16"
+			className="mx-auto max-w-[1440px] px-6 outline-none lg:px-16"
 		>
 			<PortfolioIntro />
 			<About />
-			<Experience />
+			<Experience showBootPrompt />
 			<Projects />
 			<Skills />
 			<Contact />

@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import styles from "./Experience.module.css";
+import PortfolioBoot from "./PortfolioBoot";
 import SectionHeading from "./SectionHeading";
 import { useCommitHistoryScroll } from "./useCommitHistoryScroll";
 import { useMergeSound } from "./useMergeSound";
@@ -20,8 +21,10 @@ function MergeNode({ joystick = false }: { joystick?: boolean }) {
 
 export default function Experience({
 	embedded = false,
+	showBootPrompt = false,
 }: {
 	embedded?: boolean;
+	showBootPrompt?: boolean;
 }) {
 	const stage = useRef<HTMLDivElement>(null);
 	const heading = useRef<HTMLDivElement>(null);
@@ -365,6 +368,7 @@ export default function Experience({
 					</div>
 				</div>
 			</div>
+			{showBootPrompt && <PortfolioBoot onEnable={sound.enable} />}
 		</section>
 	);
 }

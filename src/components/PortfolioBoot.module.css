@@ -1,0 +1,177 @@
+.dialog {
+	position: fixed;
+	z-index: 100;
+	inset: 0;
+	margin: 0;
+	width: 100%;
+	height: 100dvh;
+	max-width: none;
+	max-height: none;
+	overflow: auto;
+	background: #0b0d0b;
+	color: #e8ece5;
+	opacity: 0;
+}
+
+.dialog[open] {
+	opacity: 1;
+}
+
+.layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	align-content: center;
+	gap: 1rem;
+	width: min(100%, 52rem);
+	min-height: 100%;
+	margin-inline: auto;
+	padding: clamp(1rem, 4vw, 2rem);
+}
+
+.terminal {
+	border: 1px solid #3b4b33;
+	color: #e8ece5;
+	font-size: 0.8125rem;
+}
+
+.terminalBar {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 0.25rem 1rem;
+	padding: 0.625rem clamp(0.75rem, 3vw, 1.5rem);
+	border-bottom: 1px solid #3b4b33;
+	color: #92998e;
+}
+
+.console {
+	padding: clamp(0.75rem, 3vw, 1.5rem);
+}
+
+.command span,
+.success {
+	color: #61cf5a;
+}
+
+.source {
+	color: #8acfd5;
+}
+
+.value {
+	color: #c4aff7;
+}
+
+.readyLink {
+	text-decoration: underline;
+	text-underline-offset: 0.18em;
+}
+
+.warning {
+	color: #efc472;
+}
+
+.error {
+	color: #ff9292;
+}
+
+.logWindow {
+	--log-visible: 9;
+	--log-row: 1.5rem;
+	position: relative;
+	height: calc(var(--log-visible) * var(--log-row));
+	margin-top: 0.875rem;
+	overflow: auto;
+	overscroll-behavior: contain;
+	scrollbar-color: #62775b #0b0d0b;
+	scrollbar-width: thin;
+}
+
+.logWindow:focus {
+	outline: none;
+}
+
+.terminal:has(.logWindow:focus-visible) .terminalBar {
+	border-bottom-color: #61cf5a;
+}
+
+.log li {
+	min-height: var(--log-row);
+	line-height: var(--log-row);
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+
+.continue {
+	display: inline-flex;
+	justify-self: start;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1.5rem;
+	min-height: 48px;
+	padding: 0.75rem 1rem;
+	background: #61cf5a;
+	color: #0b0d0b;
+	font-size: 0.8125rem;
+	cursor: pointer;
+	touch-action: manipulation;
+}
+
+.continue svg {
+	width: 1rem;
+	height: 1rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.continue:hover {
+		background: #8be784;
+	}
+}
+
+.continue:active {
+	background: #8be784;
+}
+
+@media (height < 38rem) {
+	.layout {
+		padding-block: 1rem;
+	}
+
+	.console {
+		padding-block: 0.625rem;
+	}
+
+	.logWindow {
+		--log-visible: 5;
+		margin-top: 0.625rem;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.dialog[open] .logWindow:not([data-review]) .log li,
+	.dialog[open]:has(.logWindow:not([data-review])) .continue {
+		animation: arrive 1ms linear both;
+	}
+
+	@supports (transition-behavior: allow-discrete) {
+		.dialog {
+			transition:
+				opacity 160ms ease-out,
+				display 160ms allow-discrete;
+		}
+
+		.dialog:not([open]) {
+			pointer-events: none;
+		}
+	}
+}
+
+@keyframes arrive {
+	from {
+		opacity: 0;
+		visibility: hidden;
+	}
+	to {
+		opacity: 1;
+		visibility: visible;
+	}
+}

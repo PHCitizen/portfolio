@@ -7,8 +7,8 @@ const NOTES = [
 ];
 
 export function useMergeSound() {
-	const [enabled, setEnabled] = useState(true);
-	const enabledRef = useRef(true);
+	const [enabled, setEnabled] = useState(false);
+	const wantsSound = useRef(false);
 	const audio = useRef<{ context: AudioContext; output: GainNode } | null>(
 		null,
 	);
@@ -22,9 +22,8 @@ export function useMergeSound() {
 		};
 	}, []);
 
-	const unlock = useCallback(() => {
-		if (!enabledRef.current || audio.current?.context.state === "running")
-			return;
+	const enable = () => {
+		wantsSound.current = true;
 		try {
 			if (!audio.current) {
 				const context = new AudioContext();
@@ -32,34 +31,36 @@ export function useMergeSound() {
 				output.connect(context.destination);
 				audio.current = { context, output };
 			}
-			void audio.current.context.resume().catch(() => {});
+			const engine = audio.current;
+			engine.output.gain.value = 1;
+			// Call resume inside the click handler, while user activation is available.
+			void engine.context.resume().then(
+				() => {
+					if (audio.current === engine && wantsSound.current) setEnabled(true);
+				},
+				() => {
+					if (audio.current === engine) setEnabled(false);
+				},
+			);
 		} catch {
 			// Leave the visual merge usable if Web Audio isn't available.
+			setEnabled(false);
 		}
-	}, []);
-
-	useEffect(() => {
-		if (!enabled) return;
-		// Browsers can require a tap, click, or key press before allowing sound.
-		window.addEventListener("click", unlock);
-		window.addEventListener("keydown", unlock);
-		return () => {
-			window.removeEventListener("click", unlock);
-			window.removeEventListener("keydown", unlock);
-		};
-	}, [enabled, unlock]);
+	};
 
 	const toggle = () => {
-		const next = !enabledRef.current;
-		enabledRef.current = next;
-		setEnabled(next);
-		if (audio.current) audio.current.output.gain.value = next ? 1 : 0;
-		if (next) unlock();
+		if (!enabled) {
+			enable();
+			return;
+		}
+		wantsSound.current = false;
+		if (audio.current) audio.current.output.gain.value = 0;
+		setEnabled(false);
 	};
 
 	const play = useCallback(() => {
 		const engine = audio.current;
-		if (!enabledRef.current || !engine || document.hidden) return;
+		if (!wantsSound.current || !engine || document.hidden) return;
 		const { context, output } = engine;
 		const now = context.currentTime;
 		if (context.state !== "running" || now - lastChime.current < 0.35) return;
@@ -84,5 +85,5 @@ export function useMergeSound() {
 		}
 	}, []);
 
-	return { enabled, toggle, play };
+	return { enabled, enable, toggle, play };
 }
