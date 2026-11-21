@@ -60,6 +60,7 @@ export default function Experience({
 				</button>
 			</SectionHeading>
 			<div ref={stage} className={styles.storyStage}>
+				<span className={styles.storyViewport} aria-hidden="true" />
 				<div className={styles.storyTrack}>
 					<ol
 						className={styles.timeline}

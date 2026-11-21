@@ -18,12 +18,26 @@ export function useCommitHistoryScroll(
 ) {
 	useEffect(() => {
 		const stage = ref.current;
+		const section = stage?.parentElement;
 		const heading = headingRef.current;
 		const label = heading?.querySelector<HTMLElement>(`.${styles.mainLabel}`);
+		const viewport = stage?.querySelector<HTMLElement>(
+			`.${styles.storyViewport}`,
+		);
 		const track = stage?.querySelector<HTMLDivElement>(`.${styles.storyTrack}`);
 		const list = track?.querySelector<HTMLOListElement>(`.${styles.timeline}`);
 		const trunk = list?.querySelector<HTMLElement>(`.${styles.trunk}`);
-		if (!stage || !heading || !label || !track || !list || !trunk) return;
+		if (
+			!stage ||
+			!section ||
+			!heading ||
+			!label ||
+			!viewport ||
+			!track ||
+			!list ||
+			!trunk
+		)
+			return;
 
 		const rows = Array.from(
 			list.querySelectorAll<HTMLElement>(`.${styles.chapter}`),
@@ -65,7 +79,8 @@ export function useCommitHistoryScroll(
 			const pinOffset = headerOffset + headingHeight;
 			const size = [
 				stage.clientWidth,
-				window.innerHeight,
+				// Showing the mobile toolbar must not rebuild the pin or its spacer.
+				viewport.offsetHeight,
 				headingHeight,
 				headerOffset,
 				track.offsetHeight,
@@ -77,6 +92,9 @@ export function useCommitHistoryScroll(
 			if (size === previousSize) return;
 			previousSize = size;
 			silent = true;
+			const sectionBottom = section.getBoundingClientRect().bottom;
+			const wasBelowPin =
+				stage.hasAttribute("data-pinned") && sectionBottom <= 0;
 			context?.revert();
 			delete stage.dataset.pinned;
 			focus = undefined;
@@ -410,6 +428,15 @@ export function useCommitHistoryScroll(
 				};
 			}, stage);
 			ScrollTrigger.refresh();
+			if (wasBelowPin) {
+				// Removing the spacer during a real layout change can clamp the scroll
+				// position. Preserve the viewport's distance past the section.
+				const shift = section.getBoundingClientRect().bottom - sectionBottom;
+				if (Math.abs(shift) > 1) {
+					window.scrollTo({ top: window.scrollY + shift, behavior: "instant" });
+					ScrollTrigger.update();
+				}
+			}
 			silent = false;
 		};
 
@@ -420,6 +447,7 @@ export function useCommitHistoryScroll(
 		};
 		update();
 		const observer = new ResizeObserver(schedule);
+		observer.observe(viewport);
 		observer.observe(track);
 		observer.observe(heading);
 		for (const { part } of commits) observer.observe(part);

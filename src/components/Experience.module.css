@@ -164,8 +164,22 @@
 	margin-bottom: var(--graph-gap);
 }
 
+.storyStage {
+	--story-viewport-height: 100svh;
+}
+
+/* Measure the same stable viewport before deciding whether to pin the stage. */
+.storyViewport {
+	position: fixed;
+	inset: 0 auto auto 0;
+	width: 0;
+	height: var(--story-viewport-height);
+	visibility: hidden;
+	pointer-events: none;
+}
+
 .storyStage[data-pinned] {
-	height: calc(100dvh - var(--story-pin-offset, 0px));
+	height: calc(var(--story-viewport-height) - var(--story-pin-offset, 0px));
 	overflow: clip;
 }
 
