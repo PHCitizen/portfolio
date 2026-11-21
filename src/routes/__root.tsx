@@ -15,6 +15,7 @@ export const Route = createRootRoute({
 					"Jayvee Embog — backend software engineer based in the Philippines. Building reliable APIs, blockchain applications, and thoughtful systems with TypeScript, Python, and Rust.",
 			},
 			{ name: "theme-color", content: "#0b0d0b" },
+			{ name: "google-site-verification", content: "CBYae7Knmd2SYfgw8QafC6UhWaT6lV0XxBE4vYsIlDU" }
 		],
 		links: [
 			{ rel: "icon", href: "/assets/favicon.ico" },
