@@ -78,10 +78,12 @@ export default function Skills() {
 		<section
 			className="scroll-mt-10 border-t border-white/10 py-16 lg:py-20"
 			id="skills"
+			aria-labelledby="skills-title"
 		>
 			<SectionHeading
+				id="skills-title"
 				number="04"
-				title="Tools of the trade"
+				title="Technical skills"
 				note="MY EVERYDAY STACK"
 			/>
 			<fieldset

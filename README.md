@@ -78,6 +78,12 @@ pnpm deploy:pages
 
 The intended production URL is https://jayveeembog.pages.dev. If the project already exists, confirm its production branch is `master` before deploying; a different branch produces a preview deployment.
 
+### Search indexing
+
+After a production deployment, submit `https://jayveeembog.pages.dev/sitemap.xml` in Google Search Console and use URL Inspection on the homepage. About, Experience, Projects, Skills, and Contact are server-rendered sections of one page, so the sitemap lists the homepage only. Google decides whether to show section links or a favicon in results.
+
+If you move to a custom domain, update the production URL in `src/routes/index.tsx`, `public/robots.txt`, and `public/sitemap.xml` together. Keep only the preferred domain in the sitemap.
+
 ### Enable the Telegram contact form
 
 1. Create a **Managed** widget in Cloudflare Turnstile and allow every hostname that will serve the form (for example, `jayveeembog.pages.dev` and your custom domain).
@@ -121,7 +127,7 @@ To add a new route to your application just add a new file in the `./src/routes`
 
 TanStack will automatically generate the content of the route file for you.
 
-Now that you have two routes you can use a `Link` component to navigate between them.
+The portfolio uses one indexable page with section anchors.
 
 ### Adding Links
 
@@ -134,10 +140,10 @@ import { Link } from "@tanstack/react-router";
 Then anywhere in your JSX you can use it like so:
 
 ```tsx
-<Link to="/about">About</Link>
+<Link to="/" hash="about">About</Link>
 ```
 
-This will create a link that will navigate to the `/about` route.
+This links to the About section on the homepage (`/#about`).
 
 More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
 
@@ -167,7 +173,7 @@ export const Route = createRootRoute({
         <header>
           <nav>
             <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
+            <Link to="/" hash="about">About</Link>
           </nav>
         </header>
         {children}

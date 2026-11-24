@@ -81,8 +81,10 @@ export default function Contact({ embedded = false }: { embedded?: boolean }) {
 		<section
 			className="mb-16 scroll-mt-10 border-t border-white/10 pt-16 lg:pt-20"
 			id="contact"
+			aria-labelledby="contact-title"
 		>
 			<SectionHeading
+				id="contact-title"
 				number="05"
 				title="Open for the next chapter"
 				sticky={false}

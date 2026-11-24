@@ -174,6 +174,7 @@ export default function Projects() {
 		<section
 			className="scroll-mt-10 border-t border-white/10 py-16 lg:py-20"
 			id="projects"
+			aria-labelledby="projects-title"
 		>
 			<div
 				ref={runwayRef}
@@ -185,8 +186,9 @@ export default function Projects() {
 				>
 					<div ref={headingRef} className="pb-3">
 						<SectionHeading
+							id="projects-title"
 							number="03"
-							title="Selected work"
+							title="Selected projects"
 							note="BUILT. SHIPPED. ITERATED."
 							className="mb-2"
 							sticky={false}
@@ -256,12 +258,9 @@ export default function Projects() {
 												rel="noreferrer"
 												aria-label={`${project.linkLabel}: ${project.name}`}
 											>
-												{(project.visual === "hackathon" ||
-													project.visual === "contest") && (
-													<span className="mr-2 font-mono text-xs">
-														{project.linkLabel}
-													</span>
-												)}
+												<span className="mr-2 font-mono text-xs">
+													{project.linkLabel}
+												</span>
 												<span aria-hidden="true">↗</span>
 											</a>
 										) : (

@@ -14,8 +14,10 @@ export default function About({ embedded = false }: { embedded?: boolean }) {
 		<section
 			className="scroll-mt-10 border-t border-white/10 py-16 lg:py-20"
 			id={embedded ? undefined : "about"}
+			aria-labelledby="about-title"
 		>
 			<SectionHeading
+				id="about-title"
 				number="01"
 				title="Behind the terminal"
 				note="A LITTLE CONTEXT"

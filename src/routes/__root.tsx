@@ -8,12 +8,6 @@ export const Route = createRootRoute({
 		meta: [
 			{ charSet: "utf-8" },
 			{ name: "viewport", content: "width=device-width, initial-scale=1" },
-			{ title: "Jayvee Embog — Backend Engineer" },
-			{
-				name: "description",
-				content:
-					"Jayvee Embog — backend software engineer based in the Philippines. Building reliable APIs, blockchain applications, and thoughtful systems with TypeScript, Python, and Rust.",
-			},
 			{ name: "theme-color", content: "#0b0d0b" },
 			{
 				name: "google-site-verification",
@@ -21,7 +15,12 @@ export const Route = createRootRoute({
 			},
 		],
 		links: [
-			{ rel: "icon", href: "/assets/favicon.ico" },
+			{
+				rel: "icon",
+				href: "/assets/logo.png",
+				type: "image/png",
+				sizes: "382x382",
+			},
 			{ rel: "stylesheet", href: appCss },
 			{ rel: "preconnect", href: "https://fonts.googleapis.com" },
 			{

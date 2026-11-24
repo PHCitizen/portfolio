@@ -44,8 +44,10 @@ export default function Experience({
 		<section
 			className={`${styles.experience} scroll-mt-10 border-t border-white/10 py-16 lg:py-20`}
 			id={embedded ? undefined : "experience"}
+			aria-labelledby="experience-title"
 		>
 			<SectionHeading
+				id="experience-title"
 				ref={heading}
 				className={styles.graphHeading}
 				number="02"

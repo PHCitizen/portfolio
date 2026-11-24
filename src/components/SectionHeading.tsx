@@ -1,6 +1,7 @@
 import type { ReactNode, Ref } from "react";
 
 export default function SectionHeading({
+	id,
 	number,
 	title,
 	note,
@@ -9,6 +10,7 @@ export default function SectionHeading({
 	className = "mb-10",
 	sticky = true,
 }: {
+	id?: string;
 	number: string;
 	title: string;
 	note?: string;
@@ -23,12 +25,20 @@ export default function SectionHeading({
 			className={`bg-[#0b0d0b] pt-4 pb-2 ${sticky ? "sticky top-(--site-header-height) z-10" : ""} ${className}`}
 		>
 			<div className="flex items-center gap-6">
-				<h2 className="min-w-0 text-2xl font-semibold tracking-tight sm:text-[32px]">
-					<span className="mr-3 font-mono text-base font-normal whitespace-nowrap text-[#61cf5a]">
+				<h2
+					id={id}
+					className="min-w-0 text-2xl font-semibold tracking-tight sm:text-[32px]"
+				>
+					<span
+						aria-hidden="true"
+						className="mr-3 font-mono text-base font-normal whitespace-nowrap text-[#61cf5a]"
+					>
 						{number} /
 					</span>
 					{title}
-					<span className="text-[#61cf5a]">.</span>
+					<span aria-hidden="true" className="text-[#61cf5a]">
+						.
+					</span>
 				</h2>
 				<span className="h-px flex-1 bg-white/10" />
 				{note && (

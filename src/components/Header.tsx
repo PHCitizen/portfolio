@@ -8,7 +8,7 @@ export default function Header() {
 		<header className="sticky top-0 z-30 mx-auto flex h-(--site-header-height) max-w-[1440px] items-center justify-between border-b border-white/10 bg-[#0b0d0b] px-6 lg:px-16">
 			<a
 				className="flex items-center gap-3 text-xl font-bold tracking-tight"
-				href="/#"
+				href="/"
 				aria-label="Jayvee Embog home"
 			>
 				<img
@@ -42,7 +42,9 @@ export default function Header() {
 						href={`/#${link.toLowerCase()}`}
 						onClick={() => setOpen(false)}
 					>
-						<span className="mr-1 text-[#50864c]">0{i + 1}.</span>
+						<span aria-hidden="true" className="mr-1 text-[#50864c]">
+							0{i + 1}.
+						</span>
 						{link.toLowerCase()}
 					</a>
 				))}
