@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="228 164 568 288" width="568" height="288" role="img" aria-labelledby="title">
+  <title id="title">404</title>
+  <defs>
+    <path id="four" d="M397 236.5h13v59h12V308h-12v28h-13v-28h-47.5v-24H361v-12h12v-12h12v-12h12z M361 284h12v-12h12v-12h12v35.5h-36z"/>
+    <filter id="phosphor" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="5" result="halo"/>
+      <feComponentTransfer in="halo" result="soft-halo">
+        <feFuncA type="linear" slope=".72"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode in="soft-halo"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Open frame with clipped corners and offset traces. -->
+  <g fill="none" stroke="#76ae87" stroke-linejoin="bevel" opacity=".64">
+    <path d="M241 231v-43h149 M563 176h201l19 18v19 M783 341v43H670 M241 360v17l19 19h201"/>
+    <path d="M682 182h101 M241 390h101"/>
+  </g>
+
+  <!-- The lens sits behind the pixel zero; the handle clears the frame. -->
+  <g fill="none" stroke="#92d6a5" stroke-width="1.65">
+    <circle cx="512" cy="286" r="77.3"/>
+    <circle cx="512" cy="286" r="66.7"/>
+    <path d="M563 344l15 15m-7-22 15 15"/>
+    <g transform="translate(573 364) rotate(-45)">
+      <rect width="21" height="109" rx="4"/>
+      <path d="M6 11v84" stroke-linecap="round" opacity=".8"/>
+    </g>
+  </g>
+
+  <g fill="none" stroke="#639978" stroke-width=".9" opacity=".57">
+    <path d="M446 289h14l7 7v22l11 11m-32-36h12l5 5v22l9 9m73-84 12 12v18l7 7h14m-27-34 10 9v16l5 5h12"/>
+    <circle cx="476.5" cy="332" r="1.8"/>
+    <circle cx="546" cy="242.5" r="1.8"/>
+  </g>
+
+  <g fill="none" stroke="#91f5a7" stroke-width="1.75" stroke-linejoin="round" filter="url(#phosphor)">
+    <use href="#four"/>
+    <use href="#four" x="253"/>
+  </g>
+
+  <g filter="url(#phosphor)">
+    <path fill="#84fba1" fill-rule="evenodd" d="M491.5 235.5h41v11.5h11v78.5h-11V337h-41v-11.5h-11V247h11z M491.5 247v78.5h41V247z"/>
+    <path fill="#91ffab" d="M491.5 292.5h11v-11h10v-11h10v-11h10v22h-11v11h-10v11h-10v11h-10z"/>
+    <path fill="#143b25" d="M477 263.5h21v2.5h-21z M481 316h15v2h-15z M536 253h8v2h-8z M533 309h11v2h-11z"/>
+    <path fill="#9cf9b0" opacity=".7" d="M465 258.5h12v1.6h-12z M479 258.5h4v1.6h-4z M538 257h13v2h-13z M473 313h13v1.8h-13z M529 312h21v1.8h-21z M553 304h4v1.6h-4z"/>
+  </g>
+</svg>

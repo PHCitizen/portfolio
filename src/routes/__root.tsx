@@ -1,6 +1,7 @@
 import { createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import NotFoundPage from "../components/NotFoundPage";
 import appCss from "../styles.css?url";
 
 export const Route = createRootRoute({
@@ -34,6 +35,7 @@ export const Route = createRootRoute({
 			},
 		],
 	}),
+	notFoundComponent: NotFoundPage,
 	shellComponent: RootDocument,
 });
 
